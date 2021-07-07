@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Cadastro</title>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+<!-- Bootstrap core CSS -->
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css"
+	rel="stylesheet" />
+</head>
+<body class="p-3 mb-2 bg-light text-black">
+	<div class="container justify-content-center w-25 p-3"
+		style="background-color: #eeeeee; margin-top: 5em;">
+		<div th:if="${SuccessMessage} == 'Sign Up Successful!'"
+			class="alert alert-success">You've successfully signed up!</div>
+		<h1 class="display-5">Login</h1>
+		<form action="#" th:action="@{/onlineshop/}" method="Post">
+			<div id="error-msg" th:if="${param.error}" class="alert alert-danger">
+				Invalid username or password</div>
+			<div id="logout-msg" th:if="${param.logout}" class="alert alert-dark">
+				You have been logged out</div>
+			<div class="form-group">
+				<label for="inputUsername">Username</label> <input type="input"
+					class="form-control" name="username" id="inputUsername"
+					placeholder="Enter Username" maxlength="20" required>
+			</div>
+			<div class="form-group">
+				<label for="inputPassword">Password</label> <input type="password"
+					class="form-control" name="password" id="inputPassword"
+					placeholder="Enter Password" maxlength="20" required>
+			</div>
+			<button type="submit" class="btn btn-primary" id="submit-button">Login</button>
+		</form>
+
+		<div class="form-group" style="margin-top: 0.5em;">
+			<label><a id="signup-link" th:href="@{/onlineshop/cadastrar}">Clica
+					aqui para cadastrar-se</a></label>
+
+		</div>
+	</div>
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<script src="/webjars/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

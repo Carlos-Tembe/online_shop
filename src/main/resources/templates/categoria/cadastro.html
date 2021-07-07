@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="container" id="categoria">
+			<form action="#"
+				th:action="${categoria.id==null} ? @{/categorias/processar} : @{/categorias/editar}"
+				th:object="${categoria}" method="post">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="nome">Nome: </label> <input type="text"
+							class="form-control" placeholder="Nome categoria"
+							autofocus="autofocus" th:field="*{nome}" required="required">
+						<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="nome">Descricao: </label>
+						<textarea rows="3" cols="" class="form-control" id="nome"
+							placeholder="Descricao categoria" autofocus="autofocus"
+							th:field="*{descricao}"></textarea>
+						<span th:if="${#fields.hasErrors('descricao')}"
+							th:errors="*{descricao}"></span>
+					</div>
+				</div>
+
+				<input type="hidden" id="id" th:field="*{id}" />
+				<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+
+</head>
+<body>
+	<nav th:fragment="side-bar">
+		<center>
+			<img src="/img/user.png" class="profile_image">
+			<h4>User Name</h4>
+		</center>
+
+
+		<div class="item">
+			<a th:href="@{/onlineshop/admin}"><i class="fas fa-desktop"></i><span>Dashboard</span></a>
+		</div>
+		<div class="item">
+			<a href="#" class="sub-btn"><i class="fa fa-gift"></i><span>Artigos</span><i
+				class="fas fa-angle-right dropdown"></i></a>
+			<div class="sub-menu">
+				<a th:href="@{/artigos/cadastrar}" class="sub-item"><i
+					class="fa fa-plus-square"></i>Cadastrar</a> <a th:href="@{/artigos}"
+					class="sub-item"><i class="fa fa-list-alt"></i>Lista</a>
+			</div>
+		</div>
+
+		<a th:href="@{/fornecedores}"><i class="fa fa-cart-arrow-down"></i><span>Fornecedores</span></a>
+		<div class="item">
+			<a href="#" class="sub-btn"><i class="fa fa-shopping-bag"></i><span>Vendas</span><i
+				class="fas fa-angle-right dropdown"></i></a>
+			<div class="sub-menu">
+				<a href="#" class="sub-item"><i
+					class="fa fa-history"></i>Encomenda(ToDo)</a> <a href="#"
+					class="sub-item"><i class="fa fa-th-list"></i>Venda(ToDo)</a>
+			</div>
+		</div>
+		<a th:href="@{/utilizadores}"><i class="fa fa-users"></i><span>Utilizadores</span></a>
+		<div class="item">
+			<a href="#" class="sub-btn"><i class="fas fa-sliders-h"></i><span>Configurações</span><i
+				class="fas fa-angle-right dropdown"></i></a>
+			<div class="sub-menu">
+				<a th:href="@{/categorias}" class="sub-item"><i
+					class="fa fa-list-alt"></i>Categoria</a>
+
+			</div>
+		</div>
+		<a href="#"><i class="fas fa-info-circle"></i><span>Ajuda</span></a>
+
+	</nav>
+</body>
+</html>

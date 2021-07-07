@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="container mt-3" id="pesquisar">
+			<form method="Post">
+				<div class="form-row">
+					<div class="input-group col-md-6">
+						<input type="search" class="form-control rounded mr-1"
+							placeholder="Pesquisar" aria-label="Search"
+							aria-describedby="search-addon" />
+						<button type="button" class="btn btn-outline-primary">Pesquisar</button>
+					</div>
+				</div>
+			</form>
+			<hr>
+		</div>
+		<div class="container" id="listagem">
+			<a href="/fornecedores/cadastrar"
+				class="btn btn-success float-right mb-2">Adicionar</a>
+			<div class="table-responsive">
+				<table class="table table-striped table-hover table-sm">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Nome</th>
+							<th>Email</th>
+							<th>NUIT</th>
+							<th>Telefone</th>
+							<th>Morada</th>
+							<th>Ação</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="f : ${fornecedores}">
+							<td th:text="${fStat.index}+1">1</td>
+							<td th:text="${f.nome}">Calcas</td>
+							<td th:text="${f.email}">Todos artigos feitos em jeans</td>
+							<td th:text="${f.nuit}"></td>
+							<td th:text="${f.telefone}"></td>
+							<td th:text="${f.morada}"></td>
+							<td colspan="2"><a class="btn btn-info btn-sm" href=""
+								th:href="@{/fornecedores/editar/{id} (id=${f.id})}"
+								role="button"> <span class="oi oi-brush" title="Editar"
+									aria-hidden="true"></span>
+							</a> <a href="" th:href="@{/fornecedores/excluir/{id} (id=${f.id})}"
+								role="button" class="btn btn-danger btn-sm"> <span
+									class="oi oi-circle-x" title="Exclusão desabilitada"
+									aria-hidden="true"></span>
+							</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

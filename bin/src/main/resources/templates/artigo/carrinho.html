@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="container mt-3" id="pesquisar">
+			<form method="Post">
+				<div class="form-row">
+					<div class="input-group col-md-12">
+						<input type="search" class="form-control rounded mr-1"
+							placeholder="Pesquisar" aria-label="Search"
+							aria-describedby="search-addon" />
+						<button type="button" class="btn btn-outline-primary">Pesquisar</button>
+					</div>
+				</div>
+			</form>
+			<hr>
+		</div>
+		<div class="container" id="listagem">
+			<div class="table-responsive">
+				<table class="display table table-striped  table-hover table-sm"
+					id="table-server" style="width: 100%">
+					<thead>
+						<tr>
+
+							<th>#</th>
+							<th>...</th>
+							<th>Cod. Barra</th>
+							<th>Descricao</th>
+							<th>Preco</th>
+							<th>Quantidade</th>
+							<th>Carrinho</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="artigo : ${artigos}">
+							<td scope="col" th:text="${artigoStat.index}+1">1</td>
+							<td><img src="botas.png"></td>
+							<td th:text="${artigo.codigo_barra}">109099999</td>
+							<td th:text="${artigo.descricao}">Calca Jeans</td>
+							<td>1000</td>
+							<td>7</td>
+							<td colspan="2"><a class="btn btn-info btn-sm" href=""
+								role="button" th:href="@{/artigos/carrinho}"> <span class=""
+									title="Editar" aria-hidden="true">Remover</span>
+							</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+</body>
+</html>

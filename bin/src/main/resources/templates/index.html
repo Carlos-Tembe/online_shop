@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lista</title>
+<meta charset="UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+
+<!-- Bootstrap core CSS -->
+
+<link href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css"
+	rel="stylesheet" />
+<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+<link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css"
+	rel="stylesheet" />
+</head>
+<body>
+	<header style="height: 20px; width: 100%"> </header>
+	<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+		<!-- Brand -->
+		<a class="navbar-brand" th:href="@{/onlineshop}">OnlineShop &nbsp;<i
+			class="fab fa-google-wallet"></i></a>
+
+		<!-- Toggler/collapsibe Button -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse"
+			data-target="#collapsibleNavbar">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<!-- Navbar links -->
+		<div class="collapse navbar-collapse" id="collapsibleNavbar">
+			<ul class="navbar-nav">
+
+
+			</ul>
+		</div>
+
+		<ul class="navbar-nav ">
+
+			<li class="nav-item dropdown"><a class="nav-link"
+				th:href="@{/artigos/carrinho}"> <i class="fas fa-user"></i>&nbsp;Carrinho
+			</a> <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+				role="button" data-toggle="dropdown" aria-haspopup="true"
+				aria-expanded="false"> <i class="fas fa-user"></i>&nbsp;Conta
+			</a>
+				<div class="dropdown-menu" aria-labelledby="navbarDropdown">
+					<a class="dropdown-item" th:href="@{/onlineshop/login}">Entrar
+						&nbsp;<i class="fas fa-sign-in-alt"></i>
+					</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="#">Sobre &nbsp;<i
+						class="fas fa-users"></i></a>
+				</div></li>
+		</ul>
+	</nav>
+
+	<section class="layout-content">
+		<div class="container mt-3" id="pesquisar">
+			<form method="Post">
+				<div class="form-row">
+					<div class="input-group col-md-12">
+						<input type="search" class="form-control rounded mr-1"
+							placeholder="Pesquisar" aria-label="Search"
+							aria-describedby="search-addon" />
+						<button type="button" class="btn btn-outline-primary">Pesquisar</button>
+					</div>
+				</div>
+			</form>
+			<hr>
+		</div>
+		<div class="container" id="listagem">
+			<div class="table-responsive">
+				<table class="display table table-striped  table-hover table-sm"
+					id="table-server" style="width: 100%">
+					<thead>
+						<tr>
+
+							<th>#</th>
+							<th>...</th>
+							<th>Cod. Barra</th>
+							<th>Descricao</th>
+							<th>Preco</th>
+							<th>Carrinho</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="artigo : ${artigos}">
+							<td scope="col" th:text="${artigoStat.index}+1">1</td>
+							<td><a id="photoButton"
+								th:href="@{'/img/fotos/' + ${artigo.id} +'.png'}"> <img
+									th:src="@{'/img/fotos/' + ${artigo.id} +'.png'}" width="40"
+									height="40">
+							</a></td>
+							<td th:text="${artigo.codigo_barra}">109099999</td>
+							<td th:text="${artigo.descricao}">Calca Jeans</td>
+							<td>1000</td>
+							<td colspan="2"><a class="btn btn-info btn-sm" href=""
+								role="button"> <span class="" title="Editar"
+									aria-hidden="true">Adicionar</span>
+							</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+	<div class="modal fade" tabindex="-1" role="dialog" id="photoModal">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Photo</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+					<img id="artigoPhoto" src="" width="95%" height="95%">
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary"
+						data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- Bootstrap core JavaScript
+    ================================================== -->
+	<!-- Placed at the end of the document so the pages load faster -->
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<script src="/webjars/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+	<script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript">
+		$('.table #photoButton').on('click',function(event) {
+		   event.preventDefault();
+		   var href = $(this).attr('href');
+		   $('#photoModal #artigoPhoto').attr('src', href);
+		   $('#photoModal').modal();		
+		});	
+	</script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="container mt-3" id="cadastro">
+			<form action="" th:action="@{/artigo/movimentos/processar}"
+				th:object="${movimento}" method="Post">
+				<div class="form-row">
+					<div class="form-group col-md-8">
+						<label for="nome">Nome do Artigo: </label> <input type="text"
+							class="form-control" id="nome" disabled="disabled"
+							placeholder="Nome Artigo" autofocus="autofocus">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="fornecedor">Fornecedor : </label> <select
+							th:field="*{fornecedor}" class="form-control" id="fornecedor"
+							placeholder="Categoria do artigo" autofocus="autofocus">
+							<option value="">Seleccione</option>
+							<option th:each="f : ${fornecedores}" th:value="${f.id}"
+								th:text="${f.nome}" value=""></option>
+						</select>
+					</div>
+					<div class="form-group col-md-4">
+						<label for="qntFinal">Quantidade: </label> <input type="number"
+							class="form-control" th:field="*{quantidade}" id="qntFinal"
+							placeholder="" autofocus="autofocus">
+					</div>
+				</div>
+
+				<div class="form-row">
+					<div class="form-group col-md-2">
+						<label for="qntInicial">Qnt. Inicial: </label> <input
+							type="number" class="form-control" name="qntInicial" value=""
+							id="qntInicial" placeholder="" autofocus="autofocus">
+					</div>
+					<div class="form-group col-md-2">
+						<label for="qntFinal">Qnt. Final: </label> <input type="number"
+							class="form-control" value="" name="qntFinal" id="qntFinal"
+							placeholder="" autofocus="autofocus">
+					</div>
+					<div class="form-group col-md-2">
+						<label for="precoC">Preco Compra: </label> <input type="number"
+							class="form-control" value="" name="precoC" id="precoC"
+							placeholder="" autofocus="autofocus">
+					</div>
+					<div class="form-group col-md-2">
+						<label for="precoV">Preco Venda: </label> <input type="number"
+							class="form-control" value="" name="precoV" id="precoV"
+							placeholder="" autofocus="autofocus">
+					</div>
+				</div>
+				<input type="hidden" id="id" /> <input type="hidden"
+					th:field="*{tipo}" />
+				<button type="submit" class="btn btn-primary btn-sm">Registar
+					Entrada</button>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

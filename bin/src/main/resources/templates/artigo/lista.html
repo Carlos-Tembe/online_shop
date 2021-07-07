@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="container mt-3" id="pesquisar">
+			<form method="Post">
+				<div class="form-row">
+					<div class="input-group col-md-6">
+						<input type="search" class="form-control rounded mr-1"
+							placeholder="Pesquisar" aria-label="Search"
+							aria-describedby="search-addon" />
+						<button type="button" class="btn btn-outline-primary">Pesquisar</button>
+					</div>
+				</div>
+			</form>
+			<hr>
+		</div>
+		<div class="container" id="listagem">
+			<a href="/artigos/cadastrar" class="btn btn-success float-right mb-2">Adicionar</a>
+			<div class="table-responsive">
+				<table class="display table table-striped  table-hover table-sm"
+					id="table-server" style="width: 100%">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>...</th>
+							<th>Cod. Barra</th>
+							<th>Descricao</th>
+							<th>Ação</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="artigo : ${artigos}">
+							<td scope="col" th:text="${artigoStat.index}+1">1</td>
+							<td><img src="botas.png"></td>
+							<td th:text="${artigo.codigo_barra}">109099999</td>
+							<td th:text="${artigo.descricao}">Calca Jeans</td>
+							<td colspan="2"><a class="btn btn-info btn-sm" href=""
+								role="button"
+								th:href="@{/artigos/editar/{id} (id=${artigo.id})}"> <span
+									class="oi oi-brush" title="Editar" aria-hidden="true"></span>
+							</a> <a th:href="@{/artigos/excluir/{id} (id=${artigo.id})}"
+								role="button" class="btn btn-danger btn-sm"> <span
+									class="oi oi-circle-x" title="Exclusão desabilitada"
+									aria-hidden="true"></span>
+							</a> <a th:href="@{/artigos/detalhes/{id} (id=${artigo.id})}"
+								role="button" class="btn btn-warning btn-sm"> <span
+									class="oi oi-eye" title="Detalhes" aria-hidden="true"></span>
+							</a></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</section>
+
+	<script type="text/javascript">
+	/*$(document).ready(function(){
+		$('#table-server').DataTable({
+			processing: true,
+			serverSide: true,
+			responsive: true,
+			lengthMenu: [10,15,20,25],
+			ajax: {
+				url: "/artigos/datatables/server",
+				data: "data"
+			},
+			columuns: [
+				{data: 'id'},
+				{data: 'descricao'},
+				{data: 'codigo_barra'},
+				{data: 'preco_unitario'},
+				{data: 'quan_min'},
+				{data: 'quant_armazem'},
+				{data: 'quant_loja'},
+				{data: 'foto'}
+			],
+			columnDefs: [{
+			    "defaultContent": "-",
+			    "targets": "_all"
+			  }]
+			
+		});	
+		
+	});*/
+	</script>
+</body>
+</html>

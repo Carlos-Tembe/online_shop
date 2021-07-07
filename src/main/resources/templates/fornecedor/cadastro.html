@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="container" id="categoria">
+			<form action="#"
+				th:action="${fornecedor.id==0} ? @{/fornecedores/processar} : @{/fornecedores/editar}"
+				th:object="${fornecedor}" method="post">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="nome">Nome: </label> <input type="text"
+							class="form-control" placeholder="Nome fornecedor"
+							autofocus="autofocus" th:field="*{nome}" required="required">
+						<span th:if="${#fields.hasErrors('nome')}" th:errors="*{nome}"></span>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="email">Email: </label> <input type="email"
+							class="form-control" id="email" placeholder="Fornecedor email"
+							autofocus="autofocus" th:field="*{email}"> <span
+							th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="telefone">Telefone: </label> <input type="tel"
+							class="form-control" id="telefone" placeholder="Fornecedor Tel"
+							autofocus="autofocus" th:field="*{telefone}"> <span
+							th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></span>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="nuit">NUIT: </label> <input type="text"
+							class="form-control" id="nuit" placeholder="Nuit"
+							autofocus="autofocus" th:field="*{nuit}"> <span
+							th:if="${#fields.hasErrors('nuit')}" th:errors="*{nuit}"></span>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="morada">Morada: </label>
+						<textarea rows="3" cols="" class="form-control" id="morada"
+							th:field="*{morada}" autofocus="autofocus"></textarea>
+						<span th:if="${#fields.hasErrors('morada')}" th:errors="*{morada}"></span>
+					</div>
+				</div>
+
+				<input type="hidden" id="id" th:field="*{id}" />
+				<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+			</form>
+		</div>
+	</section>
+</body>
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="container mt-3 col-sm-8" id="cadastro">
+			<form action=""
+				th:action="${detalhe.id==null} ? @{/artigos/salvarDetlhes} : @{/artigos/editarDetalhes}"
+				th:object="${detalhe}" method="Post">
+				<div class="form-row">
+					<div class="form-group col-md-12">
+						<label for="nome">Nome do Artigo: </label> <input type="text"
+							th:field="${detalhe.artigo.descricao}" class="form-control"
+							id="nome" readonly="readonly" placeholder="Nome Artigo"
+							autofocus="autofocus"> <input type="hidden"
+							th:field="${detalhe.artigo.id}" class="form-control" /> <input
+							type="hidden" th:field="${detalhe.id}" class="form-control" />
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-4">
+						<label for="cor">Cor : </label> <select th:field="*{cor}"
+							class="form-control" id="fornecedor"
+							placeholder="Categoria do artigo" autofocus="autofocus">
+							<option value="">Seleccione</option>
+							<option th:value="azul" th:text="Azul"></option>
+							<option th:value="vermelho" th:text="vermelho"></option>
+							<option th:value="preto" th:text="preto"></option>
+							<option th:value="branco" th:text="branco"></option>
+							<option th:value="rosa" th:text="rosa"></option>
+							<option th:value="cinzento" th:text="cinzento"></option>
+							<option th:value="amarelo" th:text="amarelo"></option>
+						</select>
+					</div>
+					<div class="form-group col-md-4">
+						<label for="qntInicial">Preço Unitario: </label> <input
+							type="number" class="form-control" name="qntInicial"
+							th:field="*{preco_unitario}" id="qntInicial" placeholder=""
+							autofocus="autofocus">
+					</div>
+
+					<div th:if="${detalhe.id} == 0" class="form-group col-md-4">
+						<br>
+						<button type="submit"
+							class="btn btn-primary btn-sm float-right p-2">Guardar</button>
+					</div>
+					<div th:if="${detalhe.id} != 0" class="form-group col-md-4">
+						<br>
+						<button type="submit"
+							class="btn btn-primary btn-sm float-right p-2">Editar</button>
+					</div>
+				</div>
+			</form>
+		</div>
+	"
+		<div class="container col-sm-8 mt-4">
+			<div class="table-responsive">
+				<table class="display table table-striped  table-hover table-sm"
+					id="table-server" style="width: 100%">
+					<thead>
+						<tr>
+							<th>#</th>
+							<th>Preco Unitario</th>
+							<th>Cor</th>
+							<th>Qty. loja</th>
+							<th>Qty. Stock</th>
+							<th>Estado</th>
+							<th>Ação</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="d : ${detalhes}">
+							<td scope="col" th:text="${dStat.index}+1">1</td>
+							<td th:text="${d.preco_unitario}"></td>
+							<td th:text="${d.cor}"></td>
+							<td th:text="${d.quant_loja}"></td>
+							<td th:text="${d.quant_stock}"></td>
+							<td th:text="${d.estado}"></td>
+							<td>
+								<div class="btn-group">
+									<a class="btn btn-outline-info" href=""
+										title="Bootstrap 3 themes generator">Default</a> <a
+										class="btn btn-outline-info dropdown-toggle"
+										data-toggle="dropdown" href=""
+										title="Bootstrap 3 themes generator"><span class="caret"></span></a>
+									<ul class="dropdown-menu">
+										<li><a
+											th:href="@{/artigos/detalhes/editar/{id} (id=${d.id})}"
+											title="Editar">Editar</a></li>
+										<li><a th:href="@{/artigo/movimentos/cadastrar}"
+											title="Entrada">Dar entrada</a></li>
+										<li><a href="" title="Remover da loja">Abate loja</a></li>
+										<li class="divider"></li>
+										<li><a href="" title="Dar entrada loja">Abate Armazem</a></li>
+										<li><a
+											th:href="@{/artigos/detalhes/excluir/{id} (id=${d.id})}"
+											title="Dar entrada loja">Remover</a></li>
+									</ul>
+								</div>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</section>
+</body>
+</html>

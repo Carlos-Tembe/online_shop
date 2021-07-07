@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html layout:decorate="~{layout}">
+<head>
+<meta charset="UTF-8" />
+</head>
+<body>
+	<section class="layout-content" layout:fragment="corpo">
+		<div class="container" id="cadastro">
+			<form
+				th:action="${artigo.id==null} ? @{/artigos/processar} : @{/artigos/editar}"
+				th:object="${artigo}" enctype="multipart/form-data" method="Post">
+				<div class="form-row">
+					<div class="form-group col-md-6">
+						<label for="nome">Descricao: </label> <input type="text"
+							class="form-control" placeholder="Nome Artigo"
+							th:field="*{descricao}" autofocus="autofocus" required="required">
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-2">
+						<label for="codigoBarra">Codig. Barra: </label> <input type="text"
+							class="form-control" th:field="*{codigo_barra}"
+							placeholder="Codigo de Barra" autofocus="autofocus"
+							required="required">
+					</div>
+					<div class="form-group col-md-4">
+						<label for="codigoBarra">Categoria: </label> <select
+							class="form-control" th:field="*{categoria}"
+							placeholder="Categoria do artigo" autofocus="autofocus"
+							required="required">
+							<option value="">Seleccione</option>
+							<option th:each="c : ${categorias}" th:value="${c.id}"
+								th:text="${c.nome}">Calcados</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-row">
+					<div class="form-group col-md-2">
+						<input type="file" id="foto" accept="image/png, image/jpeg">
+					</div>
+				</div>
+				<p>
+					<img alt="Preview" id="thumbnail">
+				</p>
+				<input type="hidden" id="id" th:field="*{id}" />
+				<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+			</form>
+		</div>
+	</section>
+	<script type="text/javascript">
+		$(document).ready(function(){
+		    $('#foto').change(function(){
+		      mostrarImagemThumbnail(this);
+		    })
+		});
+		
+		function mostrarImagemThumbnail(fileInput){
+			file = fileInput.files[0];
+			reader =new FileReader();
+			
+			reader.onload=function(e){
+				$('#thumbnail').attr('src', e.target.result);
+			}		
+			reader.readAsDataURL(file);
+		}
+	
+	</script>
+</body>
+</html>

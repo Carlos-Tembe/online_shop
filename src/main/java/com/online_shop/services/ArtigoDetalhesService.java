@@ -84,6 +84,11 @@ public class ArtigoDetalhesService {
 
 	}
 
+	public Artigo_detalhes adicionarStock(Artigo_detalhes artigo_detalhe, double qty) {
+		artigo_detalhe.setQuant_stock(qty);
+		return artigo_detalhe;
+	}
+
 	public boolean subtrairNoStock(Long artigo_id, double qty) {
 		boolean resultado = false;
 		Artigo_detalhes artigo = buscarPorId(artigo_id);

@@ -57,10 +57,12 @@ public class Artigo_movimentoController {
 			return "/artigo/entrada";
 		}
 
-		artigoDetalheService.adicionarStock(detalhe.getId(), movimento.getQuantidade());
+//		artigoDetalheService.adicionarStock(detalhe.getId(), movimento.getQuantidade());
 		movimento.setQuant_inicial(detalhe.getQuant_stock());
 		movimento.setPreco_venda(detalhe.getPreco_unitario());
 		double quant_final = detalhe.getQuant_stock() + movimento.getQuantidade();
+		detalhe.setQuant_stock(quant_final);
+		artigoDetalheService.salvar(detalhe);
 		movimento.setQuant_final(quant_final);
 		movimento.setUser(userService.buscarPorId((long) 1));
 		movimentoService.salvar(movimento);

@@ -14,6 +14,7 @@
 	href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" />
 <link rel="stylesheet" th:href="@{/css/style.css}" />
 <link rel="stylesheet" th:href="@{/css/styleCorpo.css}" />
+
 </head>
 <body>
 	<input type="checkbox" id="check">
@@ -43,6 +44,8 @@
 	<script type="text/javascript">
 	
 	$(document).ready(function(){
+		
+		
 		 $('#foto').change(function(){
 		    mostrarImagemThumbnail(this);
 		  });
@@ -51,6 +54,67 @@
 			$(this).next('.sub-menu').slideToggle();
 			$(this).find('.dropdown').toggleClass('rotate');
 		});
+		
+		$('table #editButon').click(function(event){
+			 event.preventDefault();
+			 
+			 var href =$(this).attr('href');		
+			 $.get(href, function(detalhe, status){
+				 $('#preco_unitario').val(detalhe.preco_unitario);
+				 $('#codigo').val(detalhe.id);
+				 $('#cor').val(detalhe.cor);
+				 $('#size').val(detalhe.tamanho);
+				 $('#qty_disp').val(detalhe.quant_loja);
+				 
+				 
+			 });
+				
+		  });
+		
+		$('table #removeButton').click(function(event){
+			 event.preventDefault();
+			 var href =$(this).attr('href');	
+			 $.get(href, function(detalhe, status){				
+				 $('#cod').val(detalhe.id);
+				 $('#qty_disp').val(detalhe.quant_loja);
+				 
+				 
+			 });
+				
+				//$('#removeButton').modal();
+		  });
+		
+		
+		$('table #addButton').click(function(event){
+			 var href =$(this).attr('href');	
+			 console.log(href);
+			 event.preventDefault();
+			 $.get(href, function(detalhe, status){				
+				 $('#code').val(detalhe.id);
+				 $('#qty_disponivel').val(detalhe.quant_stock);
+				 
+				 
+			 });
+				
+				//$('#addButton').modal();
+		  });
+		$('table #addStockButton').click(function(event){
+			 var href =$(this).attr('href');	
+			 console.log(href);
+			 event.preventDefault();
+			 $.get(href, function(detalhe, status){				
+		
+				 $('#artigoNome').val(detalhe.artigo.descricao+' '+detalhe.cor+' '+detalhe.tamanho);
+				 $('#cod_detalhe').val(detalhe.id);
+				 $('#art').val(detalhe.artigo.id);
+				 
+				 
+			 });
+				
+				//$('#addButton').modal();
+		  });
+		
+		
 	});
 	
 	function mostrarImagemThumbnail(fileInput){
@@ -64,6 +128,7 @@
 	}
 
 	</script>
+	
 
 </body>
 </html>

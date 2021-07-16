@@ -21,6 +21,10 @@ public class Artigo_movimento extends AbstractEntity<Long> {
 	private Fornecedor fornecedor;
 
 	@ManyToOne
+	@JoinColumn(name = "artigo_detalhe_id")
+	private Artigo_detalhes artigo;
+
+	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private Utilizador user;
 

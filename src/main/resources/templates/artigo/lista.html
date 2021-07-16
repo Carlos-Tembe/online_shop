@@ -5,24 +5,33 @@
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-		<div class="container mt-3" id="pesquisar">
-			<form th:action="@{/artigos/pesquisar/admin}" method="post">
+		<div class="container mt-3" id="pesquisar">		
+		<h3 class="form-title">Registos de Artigos</h3>
+			<form th:action="@{/artigos/pesquisar}" method="get">
 				<div class="form-row">
 					<div class="input-group col-md-12">
 						<input type="search" name="search" class="form-control rounded mr-1"
 							placeholder="Pesquisar" aria-label="Search"
 							aria-describedby="search-addon" />
-						<button type="submit" class="btn btn-outline-primary">Pesquisar</button>
+						<button type="submit" class="btn btn-outline-primary btn-sm">Pesquisar</button>
 					</div>
 				</div>
-			</form>
-			<hr>
+			</form>	
+		<div th:replace="fragments/alert"></div>		
+		<hr>
 		</div>
 		<div class="container" id="listagem">
-			<a href="/artigos/cadastrar" class="btn btn-success float-right mb-2">Adicionar</a>
+			<div class="row">
+				<div class="col-md-4">
+					<a href="/artigos/cadastrar" class="btn btn-success  mb-2 btn-sm">Novo Artigo</a>	
+				</div>
+				<div class="col-md-8 float-right form-group">
+					<!-- Categoria: <select class=""></select> -->
+	
+				</div>										
+			</div>
 			<div class="table-responsive">
-				<table class="display table table-striped  table-hover table-sm"
-					id="table-server" style="width: 100%">
+				<table class="display table table-striped  table-hover table-sm" id="table-server" style="width: 100%">
 					<thead>
 						<tr>
 							<th>#</th>
@@ -57,6 +66,8 @@
 						</tr>
 					</tbody>
 				</table>
+				<hr>
+				<a href="/utilizadores/export" target="_blank" class="btn btn-outline-secondary float-right btn-sm" title="Imprimir"> <span><i class="fas fa-print"></i></span></a>
 			</div>
 		</div>
 	</section>

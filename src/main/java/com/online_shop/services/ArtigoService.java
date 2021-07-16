@@ -13,7 +13,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.online_shop.models.Artigo;
@@ -90,9 +89,16 @@ public class ArtigoService {
 	public List<Artigo> buscarTodos() {
 		return repository.findAll();
 	}
-	
-	public List<Artigo> findBySearch(String search){
+
+	public List<Artigo> findBySearch(String search) {
 		return repository.findBySearch(search);
+	}
+
+	public boolean artigoTemDetalhes(Long id) {
+		if (buscarPorId(id).getDetalhes().isEmpty()) {
+			return false;
+		}
+		return true;
 	}
 
 }

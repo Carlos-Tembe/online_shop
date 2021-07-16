@@ -35,8 +35,14 @@ public class Artigo_detalhes extends AbstractEntity<Long> {
 
 	private boolean estado;
 
+	private String tamanho;
+
 	public Artigo_detalhes(Artigo artigo) {
 		this.artigo = artigo;
+	}
+
+	public boolean getEstado() {
+		return estado;
 	}
 
 }

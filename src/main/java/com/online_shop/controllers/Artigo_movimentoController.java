@@ -13,10 +13,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.online_shop.models.Fornecedor;
+import com.online_shop.models.Artigo_detalhes;
 import com.online_shop.models.Artigo_movimento;
+import com.online_shop.models.Fornecedor;
+import com.online_shop.services.ArtigoDetalhesService;
 import com.online_shop.services.FornecedorService;
 import com.online_shop.services.Stock_movimentoService;
+import com.online_shop.services.UtilizadorService;
 
 @Controller
 @RequestMapping("artigo/movimentos")
@@ -27,6 +30,12 @@ public class Artigo_movimentoController {
 
 	@Autowired
 	private FornecedorService fornecedorService;
+
+	@Autowired
+	private UtilizadorService userService;
+
+	@Autowired
+	private ArtigoDetalhesService artigoDetalheService;
 
 	@GetMapping
 	public String listar(Model model) {
@@ -42,11 +51,20 @@ public class Artigo_movimentoController {
 
 	@PostMapping("/processar")
 	public String salvar(@Validated Artigo_movimento movimento, BindingResult result) {
+
+		Artigo_detalhes detalhe = artigoDetalheService.buscarPorId(movimento.getArtigo().getId());
 		if (result.hasErrors()) {
 			return "/artigo/entrada";
 		}
+
+		artigoDetalheService.adicionarStock(detalhe.getId(), movimento.getQuantidade());
+		movimento.setQuant_inicial(detalhe.getQuant_stock());
+		movimento.setPreco_venda(detalhe.getPreco_unitario());
+		double quant_final = detalhe.getQuant_stock() + movimento.getQuantidade();
+		movimento.setQuant_final(quant_final);
+		movimento.setUser(userService.buscarPorId((long) 1));
 		movimentoService.salvar(movimento);
-		return "redirect:/artigo/movimentos";
+		return "redirect:/artigos/detalhes/" + detalhe.getArtigo().getId();
 	}
 
 	@GetMapping("/editar/{id}")

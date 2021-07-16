@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.online_shop.models.Artigo_movimento;
-import com.online_shop.models.Utilizador;
 import com.online_shop.repository.Artigo_movimentoRepository;
 
 @Service
@@ -15,11 +14,12 @@ public class Stock_movimentoService {
 	@Autowired
 	private Artigo_movimentoRepository repository;
 
+	@Autowired
+	private UtilizadorService userService;
+
 	public void salvar(Artigo_movimento movimento) {
-		Utilizador user = new Utilizador();
-		movimento.getFornecedor().setId(3);
-		user.setId(1);
-		movimento.setUser(user);
+
+		movimento.setUser(userService.buscarPorId((long) 1));
 		repository.save(movimento);
 	}
 

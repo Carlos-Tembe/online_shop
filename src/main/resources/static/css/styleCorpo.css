@@ -6,7 +6,16 @@ html, body {
 }
 
 .layout-content {
-	padding-top: 5%;
+	padding-top: 8%;
+	margin-left: 250px;
+	background-position: center;
+	background-size: cover;
+	height: 100vh;
+	background-color: whitesmoke;
+}
+
+.layout-content-admin {
+	padding-top: 6%;
 	margin-left: 250px;
 	background-position: center;
 	background-size: cover;

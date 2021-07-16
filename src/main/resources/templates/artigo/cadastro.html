@@ -5,25 +5,27 @@
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-		<div class="container" id="cadastro">
+		<div class="container col-md-5" id="cadastro">
+		<h3 class="form-title">Registo de Artigos</h3>
+		<hr>
 			<form
 				th:action="${artigo.id==null} ? @{/artigos/processar} : @{/artigos/editar}"
 				th:object="${artigo}" enctype="multipart/form-data" method="Post">
 				<div class="form-row">
-					<div class="form-group col-md-6">
-						<label for="nome">Descricao: </label> <input type="text"
+					<div class="form-group col-md-12">
+						<label for="nome">Nome: </label> <input type="text"
 							class="form-control" placeholder="Nome Artigo"
 							th:field="*{descricao}" autofocus="autofocus" required="required">
 					</div>
 				</div>
 				<div class="form-row">
-					<div class="form-group col-md-2">
-						<label for="codigoBarra">Codig. Barra: </label> <input type="text"
+					<div class="form-group col-md-7">
+						<label for="codigoBarra">Código. Barras: </label> <input type="text"
 							class="form-control" th:field="*{codigo_barra}"
 							placeholder="Codigo de Barra" autofocus="autofocus"
 							required="required">
 					</div>
-					<div class="form-group col-md-4">
+					<div class="form-group col-md-5">
 						<label for="codigoBarra">Categoria: </label> <select
 							class="form-control" th:field="*{categoria}"
 							placeholder="Categoria do artigo" autofocus="autofocus"
@@ -35,7 +37,7 @@
 					</div>
 				</div>
 				<div class="form-row">
-					<div class="form-group col-md-2">
+					<div class="form-group col-md-10">
 						<input type="file" id="foto" accept="image/png, image/jpeg">
 					</div>
 				</div>
@@ -43,7 +45,14 @@
 					<img alt="Preview" id="thumbnail">
 				</p>
 				<input type="hidden" id="id" th:field="*{id}" />
-				<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+				<div th:if="${artigo.id} == 0">
+					<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+					<a href="/artigos" class="btn btn-danger btn-sm">Cancelar</a>					
+				</div>
+				<div th:if="${artigo.id} != 0">
+					<button type="submit" class="btn btn-primary btn-sm">Actualizar</button>
+					<a href="/artigos" class="btn btn-danger btn-sm">Cancelar</a>					
+				</div>
 			</form>
 		</div>
 	</section>

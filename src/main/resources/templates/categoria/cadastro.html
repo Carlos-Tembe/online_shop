@@ -6,12 +6,12 @@
 <body>
 
 	<section class="layout-content" layout:fragment="corpo">
-		<div class="container" id="categoria">
-			<form action="#"
-				th:action="${categoria.id==null} ? @{/categorias/processar} : @{/categorias/editar}"
-				th:object="${categoria}" method="post">
+		<div class="container col-md-5" id="categoria">
+		<h3 class="form-title">Registo de Categoria</h3>
+		<hr>
+			<form action="#" th:action="${categoria.id==null} ? @{/categorias/processar} : @{/categorias/editar}" th:object="${categoria}" method="post">
 				<div class="form-row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-12">
 						<label for="nome">Nome: </label> <input type="text"
 							class="form-control" placeholder="Nome categoria"
 							autofocus="autofocus" th:field="*{nome}" required="required">
@@ -19,7 +19,7 @@
 					</div>
 				</div>
 				<div class="form-row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-12">
 						<label for="nome">Descricao: </label>
 						<textarea rows="3" cols="" class="form-control" id="nome"
 							placeholder="Descricao categoria" autofocus="autofocus"
@@ -28,9 +28,15 @@
 							th:errors="*{descricao}"></span>
 					</div>
 				</div>
-
 				<input type="hidden" id="id" th:field="*{id}" />
-				<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+				<div th:if="${categoria.id} == 0">
+					<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+					<a href="/categorias" class="btn btn-danger btn-sm">Cancelar</a>					
+				</div>
+				<div th:if="${categoria.id} != 0">
+					<button type="submit" class="btn btn-primary btn-sm">Actualizar</button>
+					<a href="/categorias" class="btn btn-danger btn-sm">Cancelar</a>					
+				</div>
 			</form>
 		</div>
 	</section>

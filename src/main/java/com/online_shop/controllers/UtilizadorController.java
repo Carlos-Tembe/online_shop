@@ -1,5 +1,12 @@
 package com.online_shop.controllers;
 
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,7 +17,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.lowagie.text.DocumentException;
+import com.online_shop.models.Artigo;
+import com.online_shop.models.ArtigoPDFExporter;
 import com.online_shop.models.Utilizador;
+import com.online_shop.services.ArtigoService;
 import com.online_shop.services.UtilizadorService;
 
 @Controller
@@ -19,6 +30,9 @@ public class UtilizadorController {
 
 	@Autowired
 	private UtilizadorService service;
+
+	@Autowired
+	private ArtigoService artigoService;
 
 	@GetMapping
 	public String listar(Model model) {
@@ -62,6 +76,23 @@ public class UtilizadorController {
 		service.excluir(id);
 //		}
 		return listar(model);
+	}
+
+	@GetMapping("/export")
+	public void export(HttpServletResponse response) throws DocumentException, IOException {
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-mm-dd_HH:mm:ss");
+		String file_currentDate = dateFormat.format(new java.util.Date());
+
+		response.setContentType("application/pdf");
+		String headerkey = "";
+		String headerValue = "attachment; filename:artigos_" + file_currentDate + ".pdf";
+		response.setHeader(headerkey, headerValue);
+
+		List<Artigo> artigos = artigoService.buscarTodos();
+
+		ArtigoPDFExporter exporter = new ArtigoPDFExporter(artigos);
+		exporter.export(response);
+
 	}
 
 }

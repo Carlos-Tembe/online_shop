@@ -3,14 +3,15 @@ package com.online_shop.controllers;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
-
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,14 +20,19 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.online_shop.models.Artigo;
 import com.online_shop.models.Artigo_detalhes;
+import com.online_shop.models.Artigo_movimento;
 import com.online_shop.models.Categoria;
+import com.online_shop.models.Fornecedor;
 import com.online_shop.services.ArtigoDetalhesService;
 import com.online_shop.services.ArtigoService;
 import com.online_shop.services.CategoriaService;
+import com.online_shop.services.FornecedorService;
 import com.online_shop.utils.FileUploadUtil;
 
 @Controller
@@ -42,39 +48,36 @@ public class ArtigoController {
 	@Autowired
 	private ArtigoDetalhesService detalheService;
 
+	@Autowired
+	private FornecedorService fornecedorService;
+
 	@GetMapping
-	public String listar(Model model) {
+	public String listar(ModelMap model) {
 		model.addAttribute("artigos", artigoService.buscarTodos());
 		return "/artigo/lista";
 	}
-	
+
 	@PostMapping("/pesquisar")
 	public String listarPesquisa(Model model, String search) {
-		
-		
-		if(search!=null) {
+
+		if (search != null) {
 			model.addAttribute("artigos", artigoService.findBySearch(search));
-		}
-		else 
-		{
+		} else {
 			model.addAttribute("artigos", artigoService.buscarTodos());
 		}
 		return "index";
 	}
-	@PostMapping("/pesquisar/admin")
+
+	@GetMapping("/pesquisar")
 	public String listarPesquis(Model model, String search) {
-		
-		
-		if(search!=null) {
+
+		if (search != null) {
 			model.addAttribute("artigos", artigoService.findBySearch(search));
-		}
-		else 
-		{
+		} else {
 			model.addAttribute("artigos", artigoService.buscarTodos());
 		}
 		return "/artigo/lista";
 	}
-
 
 	@GetMapping("/carrinho")
 	public String verCarrinho(Model model) {
@@ -89,13 +92,14 @@ public class ArtigoController {
 	}
 
 	@PostMapping("/processar")
-	public String salvar(@Validated Artigo artigo, BindingResult result,@RequestParam("image") MultipartFile multipartFile) throws IOException {
-		
+	public String salvar(@Validated Artigo artigo, BindingResult result,
+			@RequestParam("image") MultipartFile multipartFile) throws IOException {
+
 		if (result.hasErrors()) {
 			return "/artigo/cadastro";
 		}
-		
-		 Artigo artigoSalvo = artigoService.salvar(artigo);
+
+		Artigo artigoSalvo = artigoService.salvar(artigo);
 		artigoSalvo.setFoto("444");
 		artigoService.salvar(artigoSalvo);
 		System.out.println("ola " + artigoSalvo.getId());
@@ -103,7 +107,6 @@ public class ArtigoController {
 		String fileName = org.springframework.util.StringUtils.cleanPath(multipartFile.getOriginalFilename());
 		String uploadDir = "user-photos/" + 1;
 		FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
-
 
 		return "redirect:/artigos/";
 	}
@@ -115,68 +118,116 @@ public class ArtigoController {
 	}
 
 	@PostMapping("/editar")
-	public String editar(@Validated Artigo artigo, BindingResult result) {
+	public String editar(@Validated Artigo artigo, BindingResult result, RedirectAttributes attr) {
 		if (result.hasErrors()) {
+			attr.addFlashAttribute("fail", "Ocorreu um erro");
 			return "/artigo/cadastro";
 		}
 		artigoService.salvar(artigo);
+		attr.addFlashAttribute("success", "artigo " + artigo.getDescricao() + " actualizado com sucesso");
 		return "redirect:/artigos/";
 	}
 
 	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, Model model) {
-		artigoService.excluir(id);
+	public String excluir(@PathVariable("id") Long id, ModelMap model) {
+		if (artigoService.artigoTemDetalhes(id)) {
+			model.addAttribute("fail", "Impossivel remover artigos com historico no sistema");
+		} else {
+			artigoService.excluir(id);
+			model.addAttribute("success", "Artigo removido com sucesso");
+		}
 		return listar(model);
 	}
+
+	// ---------DETALHES DO ARTIGO -----
 
 	@GetMapping("/detalhes/{id}")
 	public String salvarDetalhes(@PathVariable("id") Long id, Model model) {
 		model.addAttribute("detalhe", new Artigo_detalhes(artigoService.buscarPorId(id)));
 		model.addAttribute("detalhes", detalheService.buscarTodosPorArtigoId(id));
+		model.addAttribute("entrada", new Artigo_movimento());
 		return "/artigo/detalhes";
 	}
 
-	@GetMapping("/detalhes/editar/{id}")
-	public String editar(@PathVariable("id") Long id, Model model) {
-
-		model.addAttribute("detalhe",
-				new Artigo_detalhes(artigoService.buscarPorId(detalheService.buscarPorId(id).getArtigo().getId())));
-		model.addAttribute("detalhes", detalheService.buscarTodos());
-		return "/artigo/detalhes";
-	}
-
-	@PostMapping("/editarDetalhes")
+	@PostMapping("/detalhes/salvar")
 	public String editarDetalhes(@Validated Artigo_detalhes detalhes, BindingResult result, Model model) {
 		if (result.hasErrors()) {
-			return "/artigo/detalhes";
+
 		}
-		detalheService.salvar(detalhes);
-		return salvarDetalhes(detalhes.getArtigo().getId(), model);
+		System.out.println(detalhes.getId() + " jknds");
+		if (detalhes.getId() == 0) {
+			detalheService.salvar(detalhes);
+		} else {
+			detalheService.editar(detalhes);
+		}
+		return "redirect:/artigos/detalhes/" + detalhes.getArtigo().getId();
 	}
 
-	@PostMapping("salvarDetlhes")
-	public String salvarDetalhes(@Validated Artigo_detalhes detalhes, BindingResult result, Model model) {
-		if (result.hasErrors()) {
-			return "/artigo/detalhes";
+	@PostMapping("/detalhes/abateLoja")
+	public String abateLoja(@Validated Artigo_detalhes detalhes, BindingResult result, RedirectAttributes attr) {
+
+		if (detalheService.removerDaLoja(detalhes.getId(), detalhes.getQuant_loja())) {
+			attr.addFlashAttribute("success", (long) detalhes.getQuant_loja() + " items foram movidos para o armazem");
+		} else {
+			attr.addFlashAttribute("fail", "Ocorreu um erro, verifique as quantidades por favor!");
 		}
-		detalheService.salvar(detalhes);
-		return salvarDetalhes(detalhes.getArtigo().getId(), model);
+		return "redirect:/artigos/detalhes/" + detalhes.getArtigo().getId();
+	}
+
+	@PostMapping("/detalhes/abateStock")
+	public String abateStock(@Validated Artigo_detalhes detalhes, BindingResult result, RedirectAttributes attr) {
+		if (detalheService.removerDoStock(detalhes.getId(), detalhes.getQuant_stock())) {
+			attr.addFlashAttribute("success", (long) detalhes.getQuant_stock() + " items foram movidos para loja");
+		} else {
+			attr.addFlashAttribute("fail", "Ocorreu um erro, verifique as quantidades por favor!");
+		}
+
+		return "redirect:/artigos/detalhes/" + detalhes.getArtigo().getId();
 	}
 
 	@GetMapping("/detalhes/excluir/{id}")
 	public String excluirDetalhe(@PathVariable("id") Long id, Model model) {
 		Artigo_detalhes d = detalheService.buscarPorId(id);
+		Artigo artigo = d.getArtigo();
 		detalheService.excluir(id);
 
-		model.addAttribute("detalhe", new Artigo_detalhes(d.getArtigo()));
-		model.addAttribute("detalhes", detalheService.buscarTodos());
-		return "/artigo/detalhes";
+		model.addAttribute("detalhe", new Artigo_detalhes(artigo));
+		model.addAttribute("detalhes", detalheService.buscarTodosPorArtigoId(artigo.getId()));
+		return "redirect:/artigos/detalhes/" + d.getArtigo().getId();
+	}
+
+	@GetMapping("/detalhes/estado/{id}")
+	public String mudarEstado(@PathVariable("id") Long id, Model model, RedirectAttributes attr) {
+		Artigo_detalhes detalhes = detalheService.buscarPorId(id);
+		Artigo artigo = detalhes.getArtigo();
+
+		;
+		if (detalheService.mudarStatus(detalhes)) {
+			attr.addFlashAttribute("success",
+					"Artigo " + ((detalhes.getEstado() == true) ? "activo" : "desactivado") + " com sucesso!");
+		} else {
+			attr.addFlashAttribute("fail", "Ocorreu um erro, verifique se o artigo possui preco!");
+		}
+
+		model.addAttribute("detalhe", new Artigo_detalhes(artigo));
+		model.addAttribute("detalhes", detalheService.buscarTodosPorArtigoId(artigo.getId()));
+		return "redirect:/artigos/detalhes/" + artigo.getId();
+	}
+
+	@RequestMapping("/detalhes/findById")
+	@ResponseBody
+	public Optional<Artigo_detalhes> findById(Long id) {
+		return Optional.of(detalheService.buscarPorId(id));
 	}
 
 	@ModelAttribute("categorias")
 	public List<Categoria> listaCategoria() {
-		System.out.println(categoriaService.buscarTodos().size());
 		return categoriaService.buscarTodos();
+	}
+
+	@ModelAttribute("fornecedores")
+	public List<Fornecedor> listaFornecedor() {
+		return fornecedorService.buscarTodos();
 	}
 
 	// ======DATATABLE=========

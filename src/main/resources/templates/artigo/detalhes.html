@@ -5,25 +5,23 @@
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-		<div class="container mt-3 col-sm-8" id="cadastro">
-			<form action=""
-				th:action="${detalhe.id==null} ? @{/artigos/salvarDetlhes} : @{/artigos/editarDetalhes}"
-				th:object="${detalhe}" method="Post">
+		<div class="container mt-3 col-md-10" id="cadastro">
+		<h3 class="form-title" >Detalhes do Artigo</h3>
+		<hr>
+		<div th:replace="fragments/alert"></div>	
+			<form th:action="@{/artigos/detalhes/salvar}" th:object="${detalhe}" method="Post">
 				<div class="form-row">
 					<div class="form-group col-md-12">
-						<label for="nome">Nome do Artigo: </label> <input type="text"
-							th:field="${detalhe.artigo.descricao}" class="form-control"
-							id="nome" readonly="readonly" placeholder="Nome Artigo"
-							autofocus="autofocus"> <input type="hidden"
-							th:field="${detalhe.artigo.id}" class="form-control" /> <input
-							type="hidden" th:field="${detalhe.id}" class="form-control" />
+						<label for="nome">Nome: </label>
+						 <input type="text"	th:field="${detalhe.artigo.descricao}" class="form-control artigo-name bg-info"	id="nome" readonly="readonly"> 
+						 <input type="hidden" th:field="${detalhe.artigo.id}" class="form-control" /> 
+						 <input type="hidden" th:field="${detalhe.id}" class="form-control"  id="codigo"/>
 					</div>
 				</div>
 				<div class="form-row">
 					<div class="form-group col-md-4">
-						<label for="cor">Cor : </label> <select th:field="*{cor}"
-							class="form-control" id="fornecedor"
-							placeholder="Categoria do artigo" autofocus="autofocus">
+						<label for="cor">Cor : </label> 
+						<select th:field="*{cor}" class="form-control" id="cor" placeholder="Categoria do artigo" autofocus="autofocus">
 							<option value="">Seleccione</option>
 							<option th:value="azul" th:text="Azul"></option>
 							<option th:value="vermelho" th:text="vermelho"></option>
@@ -34,17 +32,21 @@
 							<option th:value="amarelo" th:text="amarelo"></option>
 						</select>
 					</div>
-					<div class="form-group col-md-4">
-						<label for="qntInicial">Preço Unitario: </label> <input
-							type="number" class="form-control" name="qntInicial"
-							th:field="*{preco_unitario}" id="qntInicial" placeholder=""
-							autofocus="autofocus">
+					<div class="form-group col-md-2">
+						<label for="preco_unitariol">Preço Unitario: </label>
+						 <input	type="number" class="form-control" name="preco_unitario" th:field="*{preco_unitario}" id="preco_unitario" autofocus="autofocus">
+						 
+					</div>
+					<div class="form-group col-md-2">
+						<label for="size">Tamanho: </label> 
+						<input	type="text" class="form-control" name="qntInicial"	th:field="*{tamanho}" id="size" autofocus="autofocus">
 					</div>
 
 					<div th:if="${detalhe.id} == 0" class="form-group col-md-4">
 						<br>
 						<button type="submit"
 							class="btn btn-primary btn-sm float-right p-2">Guardar</button>
+							
 					</div>
 					<div th:if="${detalhe.id} != 0" class="form-group col-md-4">
 						<br>
@@ -53,9 +55,20 @@
 					</div>
 				</div>
 			</form>
+			<hr>
+			<form th:action="@{/artigos/pesquisar}" method="get">
+				<div class="form-row">
+					<div class="input-group col-md-4">
+						<input type="search" name="search" class="form-control rounded mr-1"
+							placeholder="Pesquisar" aria-label="Search"
+							aria-describedby="search-addon" />
+						<button type="submit" class="btn btn-outline-primary btn-sm">Pesquisar<img th:src="@{'/img/icones/search.png'}" width="16"></button>
+					</div>
+				</div>
+			</form>	
 		</div>
 	"
-		<div class="container col-sm-8 mt-4">
+		<div class="container col-sm-10">
 			<div class="table-responsive">
 				<table class="display table table-striped  table-hover table-sm"
 					id="table-server" style="width: 100%">
@@ -64,6 +77,7 @@
 							<th>#</th>
 							<th>Preco Unitario</th>
 							<th>Cor</th>
+							<th>Tamanho</th>
 							<th>Qty. loja</th>
 							<th>Qty. Stock</th>
 							<th>Estado</th>
@@ -75,37 +89,152 @@
 							<td scope="col" th:text="${dStat.index}+1">1</td>
 							<td th:text="${d.preco_unitario}"></td>
 							<td th:text="${d.cor}"></td>
+							<td th:text="${d.tamanho}"></td>
 							<td th:text="${d.quant_loja}"></td>
 							<td th:text="${d.quant_stock}"></td>
-							<td th:text="${d.estado}"></td>
+							<td >
+								<a th:text="${d.estado==false} ? Inativo : Activo" th:href="@{/artigos/detalhes/estado/{id} (id=${d.id})}" title="Mudar status"></a>
+							</td>
 							<td>
-								<div class="btn-group">
-									<a class="btn btn-outline-info" href=""
-										title="Bootstrap 3 themes generator">Default</a> <a
-										class="btn btn-outline-info dropdown-toggle"
-										data-toggle="dropdown" href=""
-										title="Bootstrap 3 themes generator"><span class="caret"></span></a>
-									<ul class="dropdown-menu">
-										<li><a
-											th:href="@{/artigos/detalhes/editar/{id} (id=${d.id})}"
-											title="Editar">Editar</a></li>
-										<li><a th:href="@{/artigo/movimentos/cadastrar}"
-											title="Entrada">Dar entrada</a></li>
-										<li><a href="" title="Remover da loja">Abate loja</a></li>
-										<li class="divider"></li>
-										<li><a href="" title="Dar entrada loja">Abate Armazem</a></li>
-										<li><a
-											th:href="@{/artigos/detalhes/excluir/{id} (id=${d.id})}"
-											title="Dar entrada loja">Remover</a></li>
-									</ul>
-								</div>
+								<a th:href="@{/artigos/detalhes/findById/?id={id} (id=${d.id})}" title="Editar registo" id="editButon"><img th:src="@{'/img/icones/editar.png'}" width="16"></a>
+								<a th:href="@{/artigos/detalhes/findById/?id={id} (id=${d.id})}" data-toggle="modal" data-target="#editModal"  title="Remover da loja" id="removeButton"><img th:src="@{'/img/icones/menos.png'}" width="16"></span></a>
+								<a th:href="@{/artigos/detalhes/findById/?id={id} (id=${d.id})}" data-toggle="modal" data-target="#addModal" title="Mover p/ loja" id="addButton"><img th:src="@{'/img/icones/mais.png'}" width="16"></a>
+								<a th:href="@{/artigos/detalhes/findById/?id={id} (id=${d.id})}" data-toggle="modal" data-target="#entradaStockModal" title="Abastecer stock" id="addStockButton"><img th:src="@{'/img/icones/add.png'}" width="16"></a>
+								<a th:href="@{/artigos/detalhes/excluir/{id} (id=${d.id})}"	title="Remover registo"><img th:src="@{'/img/icones/apagar.png'}" width="16"></a>
 							</td>
 						</tr>
 					</tbody>
 				</table>
+				<hr>
+				<a href="/artigos" class="btn btn-danger btn-sm">Cancelar</a>	
+				<a href="#" class="btn btn-outline-secondary float-right btn-sm" title="Imprimir"> <span><i class="fas fa-print"></i></span></a>
 			</div>
-
 		</div>
+		
+		<div class="container">
+			<div class="modal fade" tabindex="-1" role="dialog" id="editModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Quantos Artigos deseja devolver ao armazem?</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form  th:action="@{/artigos/detalhes/abateLoja}" method="post" th:object="${detalhe}">	
+							<div class="form-row">					
+								<div class="form-group col-md-12">
+									<label for="precoUnitario">Disponiveis (loja): </label> 
+									<input type="number" class="form-control" name="qty_disp" id="qty_disp" readonly="readonly">
+									<input type="hidden" th:field="${detalhe.artigo.id}" class="form-control" /> 
+									<input type="hidden" th:field="${detalhe.id}" class="form-control"  id="cod"/>									
+								</div>
+							</div>				
+							<div class="form-row">					
+								<div class="form-group col-md-12">
+									<label for="qty_inserida">Quantidade: </label> 
+									<input type="number" class="form-control" th:field="${detalhe.quant_loja}" name="qty_inserida" id="qty_inserida" placeholder=""	autofocus="autofocus">								
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary btn-sm">Guardar</button>							
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger btn-sm"	data-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+	<div class="container">
+			<div class="modal fade" tabindex="-1" role="dialog" id="addModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Quantos Artigos deseja mandar para loja?</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+						<form  th:action="@{/artigos/detalhes/abateStock}" method="post" th:object="${detalhe}">	
+							<div class="form-row">					
+								<div class="form-group col-md-12">
+									<label for="qty_disponivel">Disponiveis (stock): </label> 
+									<input type="number" class="form-control" name="qty_disponivel" id="qty_disponivel" readonly="readonly">
+									<input type="hidden" th:field="${detalhe.artigo.id}" class="form-control" /> 
+									<input type="hidden" th:field="${detalhe.id}" class="form-control"  id="code"/>
+									
+								</div>
+							</div>				
+							<div class="form-row">					
+								<div class="form-group col-md-12">
+									<label for="qty">Quantidade: </label> 
+									<input type="number" class="form-control" th:field="${detalhe.quant_stock}" autofocus="autofocus">								
+								</div>
+							</div>
+							<button type="submit" class="btn btn-primary btn-sm">Guardar</button>							
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger btn-sm"	data-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
+	<div class="container">
+			<div class="modal fade" tabindex="-1" role="dialog" id="entradaStockModal">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+						<h5 class="modal-title">Abastecimento de stock</h5>
+						<button type="button" class="close" data-dismiss="modal"
+							aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+					</div>
+					<div class="modal-body">
+							<form action="" th:action="@{/artigo/movimentos/processar}" th:object="${entrada}" method="Post">
+								<div class="form-row">
+									<div class="form-group col-md-12">
+										<input type="text" class="form-control" id="artigoNome" readonly="readonly">
+										<input type="hidden" id="cod_detalhe" th:field="${entrada.artigo.id}">
+									</div>
+								</div>
+								<div class="form-row"> 
+									<div class="form-group col-md-8">
+										<label for="fornecedor">Fornecedor : </label> 
+											<select	th:field="*{fornecedor}" class="form-control" id="fornecedor" placeholder="Categoria do artigo" autofocus="autofocus">
+												<option value="">Seleccione</option>
+												<option th:each="f : ${fornecedores}" th:value="${f.id}" th:text="${f.nome}" value=""></option>
+											</select>
+										</div>
+									<div class="form-group col-md-4">
+										<label for="qntFinal">Quantidade: </label>
+										<input type="number" class="form-control" th:field="*{quantidade}" placeholder="" autofocus="autofocus">
+									</div>
+								</div>	
+								<div class="form-row"> 
+									<div class="form-group col-md-8">
+										<label for="precoCompra">Preco compra : </label>											
+										<input type="number" class="form-control" th:field="*{preco_compra}" placeholder="" autofocus="autofocus">
+									</div>
+								</div>							
+								<button type="submit" class="btn btn-primary btn-sm">Registar
+									Entrada</button>
+							</form>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-danger btn-sm"	data-dismiss="modal">Fechar</button>
+					</div>
+				</div>
+			</div>
+		</div>		
+	</div>
 	</section>
 </body>
 </html>

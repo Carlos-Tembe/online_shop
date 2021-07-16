@@ -1,10 +1,15 @@
 package com.online_shop.models;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -32,5 +37,8 @@ public class Artigo extends AbstractEntity<Long> {
 
 	@Column(nullable = true, length = 64)
 	private String foto;
+	@JsonIgnore
+	@OneToMany(mappedBy = "artigo")
+	private List<Artigo_detalhes> detalhes;
 
 }

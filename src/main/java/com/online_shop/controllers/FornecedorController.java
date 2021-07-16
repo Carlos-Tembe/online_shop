@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.online_shop.models.Fornecedor;
 import com.online_shop.services.FornecedorService;
@@ -25,19 +26,17 @@ public class FornecedorController {
 		model.addAttribute("fornecedores", service.buscarTodos());
 		return "/fornecedor/lista";
 	}
-	
-//	@GetMapping
-//	public String listar(Model model,String search) {
-//		
-//		if(search!=null) {
-//			model.addAttribute("fornecedores", service.buscarPor(search));
-//		}
-//		else 
-//		{
-//			model.addAttribute("fornecedores", service.buscarTodos());
-//		}
-//		return "/fornecedor/lista";
-//	}
+
+	@GetMapping("/pesquisar")
+	public String pesquisar(Model model, String search) {
+
+		if (search != null) {
+			model.addAttribute("fornecedores", service.buscarPor(search));
+		} else {
+			model.addAttribute("fornecedores", service.buscarTodos());
+		}
+		return "/fornecedor/lista";
+	}
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Model model) {
@@ -46,11 +45,13 @@ public class FornecedorController {
 	}
 
 	@PostMapping("/processar")
-	public String processForm(@Validated Fornecedor fornecedor, BindingResult result) {
+	public String processForm(@Validated Fornecedor fornecedor, BindingResult result, RedirectAttributes attr) {
 		if (result.hasErrors()) {
+			attr.addFlashAttribute("fail", "Ocorreu um erro");
 			return "/fornecedor/cadastro";
 		}
 		service.salvar(fornecedor);
+		attr.addFlashAttribute("success", "Fornecedor registado com sucesso");
 		return "redirect:/fornecedores";
 	}
 
@@ -61,11 +62,14 @@ public class FornecedorController {
 	}
 
 	@PostMapping("/editar")
-	public String editar(@Validated Fornecedor fornecedor, BindingResult result) {
+	public String editar(@Validated Fornecedor fornecedor, BindingResult result, RedirectAttributes attr) {
 		if (result.hasErrors()) {
+			attr.addFlashAttribute("fail", "Ocorreu um erro ");
 			return "/fornecedor/cadastro";
+
 		}
 		service.salvar(fornecedor);
+		attr.addFlashAttribute("success", "Fornecedor " + fornecedor.getNome() + " actualizado com sucesso");
 		return "redirect:/fornecedores";
 	}
 

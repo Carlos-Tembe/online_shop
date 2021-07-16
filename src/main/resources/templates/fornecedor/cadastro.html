@@ -5,12 +5,14 @@
 </head>
 <body>
 	<section class="layout-content" layout:fragment="corpo">
-		<div class="container" id="categoria">
+		<div class="container col-md-6" id="categoria">
+		<h3 class="form-title">Registo de Fornecedores</h3>
+		<hr>
 			<form action="#"
 				th:action="${fornecedor.id==0} ? @{/fornecedores/processar} : @{/fornecedores/editar}"
 				th:object="${fornecedor}" method="post">
 				<div class="form-row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-12">
 						<label for="nome">Nome: </label> <input type="text"
 							class="form-control" placeholder="Nome fornecedor"
 							autofocus="autofocus" th:field="*{nome}" required="required">
@@ -18,7 +20,7 @@
 					</div>
 				</div>
 				<div class="form-row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-12">
 						<label for="email">Email: </label> <input type="email"
 							class="form-control" id="email" placeholder="Fornecedor email"
 							autofocus="autofocus" th:field="*{email}"> <span
@@ -26,7 +28,7 @@
 					</div>
 				</div>
 				<div class="form-row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-12">
 						<label for="telefone">Telefone: </label> <input type="tel"
 							class="form-control" id="telefone" placeholder="Fornecedor Tel"
 							autofocus="autofocus" th:field="*{telefone}"> <span
@@ -34,7 +36,7 @@
 					</div>
 				</div>
 				<div class="form-row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-12">
 						<label for="nuit">NUIT: </label> <input type="text"
 							class="form-control" id="nuit" placeholder="Nuit"
 							autofocus="autofocus" th:field="*{nuit}"> <span
@@ -42,7 +44,7 @@
 					</div>
 				</div>
 				<div class="form-row">
-					<div class="form-group col-md-6">
+					<div class="form-group col-md-12">
 						<label for="morada">Morada: </label>
 						<textarea rows="3" cols="" class="form-control" id="morada"
 							th:field="*{morada}" autofocus="autofocus"></textarea>
@@ -51,7 +53,15 @@
 				</div>
 
 				<input type="hidden" id="id" th:field="*{id}" />
-				<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+				<div th:if="${fornecedor.id} == 0">
+					<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+					<a href="/fornecedores" class="btn btn-danger btn-sm">Cancelar</a>					
+				</div>
+				<div th:if="${fornecedor.id} != 0">
+					<button type="submit" class="btn btn-primary btn-sm">Actualizar</button>
+					<a href="/fornecedores" class="btn btn-danger btn-sm">Cancelar</a>					
+				</div>
+				
 			</form>
 		</div>
 	</section>

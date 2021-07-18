@@ -1,6 +1,9 @@
 package com.online_shop.controllers;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,7 +22,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -33,7 +35,6 @@ import com.online_shop.services.ArtigoDetalhesService;
 import com.online_shop.services.ArtigoService;
 import com.online_shop.services.CategoriaService;
 import com.online_shop.services.FornecedorService;
-import com.online_shop.utils.FileUploadUtil;
 
 @Controller
 @RequestMapping("artigos")
@@ -92,21 +93,31 @@ public class ArtigoController {
 	}
 
 	@PostMapping("/processar")
-	public String salvar(@Validated Artigo artigo, BindingResult result,
-			@RequestParam("image") MultipartFile multipartFile) throws IOException {
+	public String salvar(@Validated Artigo artigo, BindingResult result, MultipartFile file, RedirectAttributes attr)
+			throws IOException {
 
 		if (result.hasErrors()) {
 			return "/artigo/cadastro";
 		}
 
-		Artigo artigoSalvo = artigoService.salvar(artigo);
-		artigoSalvo.setFoto("444");
-		artigoService.salvar(artigoSalvo);
-		System.out.println("ola " + artigoSalvo.getId());
+		boolean fileOk = false;
+		byte[] bytes = file.getBytes();
+		String fileName = file.getOriginalFilename();
+		Path path = Paths.get("src/main/resources/static/img/fotos/" + fileName);
 
-		String fileName = org.springframework.util.StringUtils.cleanPath(multipartFile.getOriginalFilename());
-		String uploadDir = "user-photos/" + 1;
-		FileUploadUtil.saveFile(uploadDir, fileName, multipartFile);
+		if (fileName.endsWith("jpg") || fileName.endsWith("png") || fileName.endsWith("jpeg")
+				|| fileName.endsWith("PNG")) {
+			fileOk = true;
+		}
+
+		if (!fileOk) {
+			attr.addFlashAttribute("fail", " A imagem de ser jpg ou png");
+		} else {
+			artigo.setFoto(fileName);
+			artigoService.salvar(artigo);
+			Files.write(path, bytes);
+			attr.addFlashAttribute("success", "artigo " + artigo.getDescricao() + " registado com sucesso");
+		}
 
 		return "redirect:/artigos/";
 	}
@@ -118,13 +129,33 @@ public class ArtigoController {
 	}
 
 	@PostMapping("/editar")
-	public String editar(@Validated Artigo artigo, BindingResult result, RedirectAttributes attr) {
+	public String editar(@Validated Artigo artigo, BindingResult result, RedirectAttributes attr, MultipartFile file)
+			throws IOException {
 		if (result.hasErrors()) {
 			attr.addFlashAttribute("fail", "Ocorreu um erro");
 			return "/artigo/cadastro";
 		}
-		artigoService.salvar(artigo);
-		attr.addFlashAttribute("success", "artigo " + artigo.getDescricao() + " actualizado com sucesso");
+
+		boolean fileOk = false;
+		byte[] bytes = file.getBytes();
+		String fileName = file.getOriginalFilename();
+		Path path = Paths.get("src/main/resources/static/img/fotos/" + fileName).toAbsolutePath().normalize();
+		/// CopyOption(file.getInputStream(),path);
+
+		if (fileName.endsWith("jpg") || fileName.endsWith("png") || fileName.endsWith("jpeg")
+				|| fileName.endsWith("PNG")) {
+			fileOk = true;
+		}
+
+		if (!fileOk) {
+			attr.addFlashAttribute("fail", " A imagem deve ser jpg ou png");
+		} else {
+			artigo.setFoto(fileName);
+			Files.write(path, bytes);
+			artigoService.salvar(artigo);
+
+			attr.addFlashAttribute("success", "artigo " + artigo.getDescricao() + " actualizado com sucesso");
+		}
 		return "redirect:/artigos/";
 	}
 
@@ -136,7 +167,7 @@ public class ArtigoController {
 			artigoService.excluir(id);
 			model.addAttribute("success", "Artigo removido com sucesso");
 		}
-		return listar(model);
+		return "redirect:/artigos/";
 	}
 
 	// ---------DETALHES DO ARTIGO -----
@@ -154,7 +185,6 @@ public class ArtigoController {
 		if (result.hasErrors()) {
 
 		}
-		System.out.println(detalhes.getId() + " jknds");
 		if (detalhes.getId() == 0) {
 			detalheService.salvar(detalhes);
 		} else {

@@ -9,8 +9,7 @@
 		<h3 class="form-title">Registo de Artigos</h3>
 		<hr>
 			<form
-				th:action="${artigo.id==null} ? @{/artigos/processar} : @{/artigos/editar}"
-				th:object="${artigo}" enctype="multipart/form-data" method="Post">
+				th:action="${artigo.id==0} ? @{/artigos/processar} : @{/artigos/editar}"	th:object="${artigo}" enctype="multipart/form-data" method="Post">
 				<div class="form-row">
 					<div class="form-group col-md-12">
 						<label for="nome">Nome: </label> <input type="text"
@@ -26,23 +25,25 @@
 							required="required">
 					</div>
 					<div class="form-group col-md-5">
-						<label for="codigoBarra">Categoria: </label> <select
-							class="form-control" th:field="*{categoria}"
-							placeholder="Categoria do artigo" autofocus="autofocus"
-							required="required">
+						<label for="codigoBarra">Categoria: </label> 
+						<a href="/categorias">
+							<img src="/img/icones/mais.png" class="profile_image" width="16" title="Adicionar Categoria">
+						</a>
+						<select	class="form-control" th:field="*{categoria}" autofocus="autofocus" required="required">
 							<option value="">Seleccione</option>
-							<option th:each="c : ${categorias}" th:value="${c.id}"
-								th:text="${c.nome}">Calcados</option>
+							<option th:each="c : ${categorias}" th:value="${c.id}"	th:text="${c.nome}">Calcados</option>
 						</select>
+						
 					</div>
+					
 				</div>
 				<div class="form-row">
 					<div class="form-group col-md-10">
-						<input type="file" id="foto" accept="image/png, image/jpeg">
+						<input type="file" id="foto"  th:name="file">
 					</div>
 				</div>
 				<p>
-					<img alt="Preview" id="thumbnail">
+					<img alt="Preview" id="thumbnail" width="120" class="img-thumbnail">
 				</p>
 				<input type="hidden" id="id" th:field="*{id}" />
 				<div th:if="${artigo.id} == 0">

@@ -35,22 +35,22 @@
 					<thead>
 						<tr>
 							<th>#</th>
-							<th>...</th>
+							<th>Imagem</th>
 							<th>Cod. Barra</th>
 							<th>Descricao</th>
+							<th>Categoria</th>
 							<th>Ação</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="artigo : ${artigos}">
 							<td scope="col" th:text="${artigoStat.index}+1">1</td>
-							<td><a id="photoButton"
-								th:href="@{'/img/fotos/19.png'}"> <img
-									th:src="@{'/img/fotos/botas.png'}" width="40"
-									height="40">
+							<td><a id="photoButton"	th:href="@{'/img/fotos/'+ ${artigo.foto}}" target="_blank"> <img
+									th:src="@{'/img/fotos/'+ ${artigo.foto}}" height="60"  width="60" class="img-thumbnail">
 							</a></td>
 							<td th:text="${artigo.codigo_barra}">109099999</td>
 							<td th:text="${artigo.descricao}">Calca Jeans</td>
+							<td th:text="${artigo.categoria.nome}"></td>
 							<td colspan="2"><a class="btn btn-info btn-sm" href=""
 								role="button"
 								th:href="@{/artigos/editar/{id} (id=${artigo.id})}"> <span

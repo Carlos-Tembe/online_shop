@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+</head>
+<body>
+	<div class="col-md-2 bg-light" th:fragment="categories">		
+		<h3 class="display-5">Categorias</h3>
+		<ul class="list-group">
+			<li class="list-group-item">
+				<a href="/categorias/0" class="nav-link">Todos Produtos</a>
+			</li>
+			<li class="list-group-item" th:each="categoria : ${categorias}">
+				<a class="nav-link" th:href="@{/categorias/{id} (id=${categoria.id})}" th:text="${categoria.nome}"></a>
+			</li>				
+		</ul>
+	</div>
+</body>
+</html>

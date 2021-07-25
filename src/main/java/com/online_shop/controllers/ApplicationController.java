@@ -1,5 +1,7 @@
 package com.online_shop.controllers;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -7,8 +9,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.online_shop.models.Categoria;
 import com.online_shop.models.Utilizador;
 import com.online_shop.services.ArtigoService;
+import com.online_shop.services.CategoriaService;
 
 @Controller
 @RequestMapping("onlineshop")
@@ -16,21 +20,34 @@ public class ApplicationController {
 
 	@Autowired
 	private ArtigoService service;
+	@Autowired
+	private CategoriaService categoriaService;
+
+//	@GetMapping
+//	public String index(Model model) {
+//		List<Categoria> categorias = categoriaService.buscarTodos();
+//		model.addAttribute("artigos", service.buscarTodos());
+//		model.addAttribute("categorias", categorias);
+//		return "index";
+//	}
 
 	@GetMapping
 	public String index(Model model) {
+		List<Categoria> categorias = categoriaService.buscarTodos();
 		model.addAttribute("artigos", service.buscarTodos());
-		return "index";
+		model.addAttribute("categorias", categorias);
+		return "menu";
 	}
 
 	@GetMapping("/admin")
 	public String goHome() {
 		return "admin/admin";
 	}
+
 	@PostMapping
 	public String entrar() {
 		return "admin/admin";
-	
+
 	}
 
 	@GetMapping("/login")

@@ -101,4 +101,13 @@ public class ArtigoService {
 		return true;
 	}
 
+	public long total() {
+		return repository.count();
+	}
+
+	public Page<Artigo> buscarTodos(Pageable pageable) {
+
+		return repository.findAll(pageable);
+	}
+
 }

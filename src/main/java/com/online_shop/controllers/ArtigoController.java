@@ -11,7 +11,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
@@ -44,6 +43,8 @@ import com.online_shop.services.FornecedorService;
 @RequestMapping("artigos")
 public class ArtigoController {
 
+	private final long ACTIVO = 1;
+	private final long INACTIVO = 0;
 	@Autowired
 	private ArtigoService artigoService;
 
@@ -279,8 +280,8 @@ public class ArtigoController {
 		Pageable pageable = PageRequest.of(page, perPage);
 		long count = 0;
 		if (id == 0) {
-			Page<Artigo_detalhes> artigos = detalheService.buscarTodos(pageable);
-			count = detalheService.total();
+			List<Artigo_detalhes> artigos = detalheService.buscarArtigosPorEstado(ACTIVO);
+			count = artigos.size();
 			model.addAttribute("artigos", artigos);
 			model.addAttribute("count", count);
 			model.addAttribute("nomeCategoria", "Todas categorias");

@@ -3,6 +3,8 @@ package com.online_shop.services;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.online_shop.models.Artigo_detalhes;
@@ -125,4 +127,20 @@ public class ArtigoDetalhesService {
 		return repository.findByArtigoId(id);
 	}
 
+	public List<Artigo_detalhes> buscarArtigosPorEstado(Long status) {
+		return repository.findAllStatusArtigo_detalhes(status);
+	}
+
+	public Page<Artigo_detalhes> buscarTodos(Pageable pageable) {
+		return repository.findAll(pageable);
+	}
+
+	public long total() {
+
+		return repository.count();
+	}
+
+	public List<Artigo_detalhes> buscarTodosPorCategoriaId(long category_id) {
+		return repository.findAllByCategoryId(category_id);
+	}
 }

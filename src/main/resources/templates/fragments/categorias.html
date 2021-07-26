@@ -22,10 +22,10 @@
 		        <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 		          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 		            <li class="nav-item">
-		              <a class="nav-link active" aria-current="page" href="/categorias/0">Todas</a>
+		              <a class="nav-link active" aria-current="page" href="/artigos/0">Todas</a>
 		            </li>
 		            <li class="nav-item" th:each="categoria : ${categorias}">
-		              <a class="nav-link" th:href="@{/categorias/{id} (id=${categoria.id})}" th:text="${categoria.nome}"></a>
+		              <a class="nav-link" th:href="@{/artigos/{id} (id=${categoria.id})}" th:text="${categoria.nome}"></a>
 		            </li>		            	            
 		          </ul>
 		          <div class="float float-right">

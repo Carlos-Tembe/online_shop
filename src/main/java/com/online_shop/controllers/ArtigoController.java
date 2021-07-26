@@ -11,6 +11,9 @@ import java.util.Optional;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,6 +25,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -266,4 +270,39 @@ public class ArtigoController {
 		Map<String, Object> data = artigoService.execute(request);
 		return ResponseEntity.ok(data);
 	}
+
+	@GetMapping("/{id}")
+	public String buscarAtigos(@PathVariable Long id, Model model,
+			@RequestParam(value = "page", required = false) Integer p) {
+		int perPage = 6;
+		int page = (p != null) ? p : 0;
+		Pageable pageable = PageRequest.of(page, perPage);
+		long count = 0;
+		if (id == 0) {
+			Page<Artigo_detalhes> artigos = detalheService.buscarTodos(pageable);
+			count = detalheService.total();
+			model.addAttribute("artigos", artigos);
+			model.addAttribute("count", count);
+			model.addAttribute("nomeCategoria", "Todas categorias");
+		} else {
+			Categoria categoria = categoriaService.buscarPorId(id);
+			if (categoria == null) {
+				return "redirect:/index";
+			}
+			String nomeCategoria = categoria.getNome();
+			List<Artigo_detalhes> artigos = detalheService.buscarTodosPorCategoriaId(categoria.getId());
+			count = artigos.size();
+			model.addAttribute("artigos", artigos);
+			model.addAttribute("nomeCategoria", nomeCategoria);
+		}
+
+		double pageCount = Math.ceil((double) count / (double) perPage);
+		model.addAttribute("categorias", categoriaService.buscarTodos());
+		model.addAttribute("pageCount", (int) pageCount);
+		model.addAttribute("perPage", perPage);
+		model.addAttribute("page", page);
+
+		return "products";
+	}
+
 }

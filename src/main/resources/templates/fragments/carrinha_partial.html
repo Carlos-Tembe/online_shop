@@ -1,0 +1,45 @@
+<style>
+.carrinha{
+	color:#fff;
+	font-family: segoe ui;
+	font-size: 18px;	
+}
+
+.msg{
+	text-align: center;
+	font-weight: 200;
+}
+</style>
+<div style="margin-top:100px;" class="modal fade" tabindex="-1" role="dialog" id="carrinhoModal">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title">Carrinho</h5>
+				<button type="button" class="close" data-dismiss="modal"
+					aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body bg-dark">
+				<div class=" mt-3"  th:fragment="carrinha_partial">
+					<div class="cart carrinhaActive" th:if="${carrinhaActive}">
+						<p class="carrinha msg">Tem <span th:text="${cTamanho}+'  '"></span>items no seu carrinho</p>
+						<p class="carrinha msg">Total <span th:text="${#numbers.formatDecimal(cTotal,0,'COMMA',2,'POINT')+' MT'}"></span></p>	
+						<p class="carrinha">
+							<a href="/carrinho/view" class="btn btn-success btn-sm"> Ver carrinho</a>
+							<a href="/carrinho/clear" class="btn btn-danger float-right btn-sm"> Limpar carrinho</a>
+						</p>
+					</div>
+					<div class="Cart carrinhaInactive" th:unless="${carrinhaActive}">
+						<p class="carrinha">Carrinho vazio!</p>
+					</div>
+				</div>	
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-danger btn-sm"	data-dismiss="modal">Fechar</button>
+			</div>
+		</div>
+	</div>
+</div>			
+
+	

@@ -4,11 +4,13 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -34,6 +36,7 @@ import com.online_shop.models.Artigo_detalhes;
 import com.online_shop.models.Artigo_movimento;
 import com.online_shop.models.Categoria;
 import com.online_shop.models.Fornecedor;
+import com.online_shop.models.Item_venda;
 import com.online_shop.services.ArtigoDetalhesService;
 import com.online_shop.services.ArtigoService;
 import com.online_shop.services.CategoriaService;
@@ -41,6 +44,7 @@ import com.online_shop.services.FornecedorService;
 
 @Controller
 @RequestMapping("artigos")
+@SuppressWarnings("unchecked")
 public class ArtigoController {
 
 	private final long ACTIVO = 1;
@@ -274,7 +278,7 @@ public class ArtigoController {
 
 	@GetMapping("/{id}")
 	public String buscarAtigos(@PathVariable Long id, Model model,
-			@RequestParam(value = "page", required = false) Integer p) {
+			@RequestParam(value = "page", required = false) Integer p, HttpSession session) {
 		int perPage = 6;
 		int page = (p != null) ? p : 0;
 		Pageable pageable = PageRequest.of(page, perPage);
@@ -284,7 +288,7 @@ public class ArtigoController {
 			count = artigos.size();
 			model.addAttribute("artigos", artigos);
 			model.addAttribute("count", count);
-			model.addAttribute("nomeCategoria", "Todas categorias");
+
 		} else {
 			Categoria categoria = categoriaService.buscarPorId(id);
 			if (categoria == null) {
@@ -297,6 +301,22 @@ public class ArtigoController {
 			model.addAttribute("nomeCategoria", nomeCategoria);
 		}
 
+		boolean carrinhaActive = false;
+
+		if (session.getAttribute("carrinho") != null) {
+			HashMap<Long, Item_venda> carrinho = (HashMap<Long, Item_venda>) session.getAttribute("carrinho");
+			int tamanho = 0;
+			double total = 0;
+			for (Item_venda value : carrinho.values()) {
+				tamanho += value.getQuantidade();
+				total += value.getPreco_unitario();
+			}
+
+			model.addAttribute("cTamanho", tamanho);
+			model.addAttribute("cTotal", total);
+			carrinhaActive = true;
+		}
+		model.addAttribute("carrinhaActive", carrinhaActive);
 		double pageCount = Math.ceil((double) count / (double) perPage);
 		model.addAttribute("categorias", categoriaService.buscarTodos());
 		model.addAttribute("pageCount", (int) pageCount);

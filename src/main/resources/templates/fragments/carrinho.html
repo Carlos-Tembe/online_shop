@@ -71,67 +71,7 @@ header{
       </nav>
     </header>
   
-	<div class="latest-products" style="padding-top: 110px;">
-      <div class="container">
-        <div class="row  mb-4">     
-		    	<div th:replace="/fragments/categorias" ></div>		
-          <div class="col-md-12">
-            <div class="section-heading">
-              <h2 th:text="${nomeCategoria}?:'Todos Artigos'"></h2>
-            </div>
-          </div>
-          <div class="col-md-4"  th:each="artigo : ${artigos}">
-            <div class="product-item">
-              <a th:href="@{'/img/fotos/'+ ${artigo.artigo.foto}}" id="fotoModal"><img th:src="@{'/img/fotos/'+ ${artigo.artigo.foto}}" height="270" alt=""></a>
-              <div class="down-content">
-                <a href="#"><h4 th:text="${artigo.artigo.descricao}+' '+${artigo.cor}"></h4></a>
-                <h6 th:text="${#numbers.formatDecimal(artigo.preco_unitario,0,'COMMA',2,'POINT')}+ ' MT'">$25.75</h6>
-                <p th:text="'Tamanho:'+${artigo.tamanho}"></p>
-                <ul class="stars">
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                  <li><i class="fa fa-star"></i></li>
-                </ul>
-                <div style="position: relative;" class="float-right">
-                	<p> 
-                		<span>
-	                	 	<a title="Adicionar ao carrinho" class="btn btn-sm pr-4 cart-btn addCarrinho bg-danger pl-4"
-	                	 	 style="color: #fff;" th:attr="data-id=${artigo.id}" th:href="@{'/carrinho/add/' + ${artigo.id}}">
-	                	 	 Adicionar&nbsp;&nbsp;<i class="fas fa-cart-plus fa-lg" style="color: #fff;"></i></a> 
-                		 </span>
-                		 <img class="ajaxLoader d-none" src="/img/sistema/ajax-loader.gif">
-                		 <div class="btn btn-success btn-sm artigoAdicionado" style="position: absolute;right:30px;top:-4px; display:none ">Adiconado!</div>
-                	</p>
-                	
-                </div>
-              </div>
-            </div>
-          </div>         
-        </div>
-     
-         <nav class="" th:if="${count > perPage}">
-			<ul class="pagination pagination-circle d-flex justify-content-center">
-				<li class="page-item" th:if="${page > 0}">
-					<a th:href="@{${#httpServletRequest.requestURI}} + '?page=__${page-1}__'" class="page-link">Anterior</a>
-				</li>
-				<li class="page-item" th:each="number : ${#numbers.sequence(0,pageCount-1)}" th:classappend="${page==number} ? 'active' : ''">
-					<a th:href="@{${#httpServletRequest.requestURI}} + '?page=__${number}__'" class="page-link" th:text="${number+1}"></a>
-				</li>
-				<li class="page-item" th:if="${page < pageCount-1}">
-					<a th:href="@{${#httpServletRequest.requestURI}} + '?page=__${page+1}__'" class="page-link">Proximo</a>
-				</li>
-			</ul>			
-		</nav>
-		<div th:replace="/fragments/carrinha_partial"></div>	
-		<div th:unless="${!artigos.empty}">
-			<h4 class="display-5 d-flex justify-content-center">Nenhum artigo foi encontrado</h4>
-		</div>	
-      </div>
-    </div>
-
-<div th:replace="/fragments/photoModal"></div>	
+	
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->

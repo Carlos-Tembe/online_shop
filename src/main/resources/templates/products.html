@@ -85,7 +85,7 @@ header{
               <a th:href="@{'/img/fotos/'+ ${artigo.artigo.foto}}" id="fotoModal"><img th:src="@{'/img/fotos/'+ ${artigo.artigo.foto}}" height="270" alt=""></a>
               <div class="down-content">
                 <a href="#"><h4 th:text="${artigo.artigo.descricao}+' '+${artigo.cor}"></h4></a>
-                <h6 th:text="${#numbers.formatDecimal(artigo.preco_unitario,0,'COMMA',2,'POINT')}+ ' MT'">$25.75</h6>
+                <h6 th:text="${#numbers.formatDecimal(artigo.preco_unitario,0,'COMMA',2,'POINT')}+ ' MZN'">$25.75</h6>
                 <p th:text="'Tamanho:'+${artigo.tamanho}"></p>
                 <ul class="stars">
                   <li><i class="fa fa-star"></i></li>

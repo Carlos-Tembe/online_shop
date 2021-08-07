@@ -49,7 +49,7 @@ header{
                 <a class="nav-link" href="index.html">Início                  
                 </a>
               </li> 
-              <li class="nav-item active">
+              <li class="nav-item">
                 <a class="nav-link" href="products.html">Nossos produtos</a>
                 <span class="sr-only">(current)</span>
               </li>
@@ -59,9 +59,9 @@ header{
               <li class="nav-item">
                 <a class="nav-link" href="contact.html">Contacte-nos</a>
               </li>
-              <li class="nav-item me-3 me-lg-0">
+              <li class="nav-item active me-3 me-lg-0">
 		        <a class="nav-link" href="#" data-toggle="modal" data-target="#carrinhoModal">
-		          <span class="badge badge-pill bg-danger" th:text="${cTamanho}">0</span>
+		          <span class="badge badge-pill bg-danger" th:text="${tamanho}">0</span>
 		          <span><i class="fas fa-shopping-cart"></i></span>
 		        </a>
 		      </li>
@@ -70,9 +70,55 @@ header{
         </div>
       </nav>
     </header>
-  
-	
-	<!-- Bootstrap core JavaScript
+    <body>
+    	<div class="container mt-5">
+    		<div class="row">
+    			<div class="col"></div>
+    			<div class="col-12">
+    				<h2 class="display-6 d-flex justify-content-center" style="margin-top: 130px">Minhas compras <span class="ml-2"><i class="fas fa-shopping-bag"></i></span></h2>
+    				<table class="table mt-2">
+    					<tr>
+    						<th>Artigo</th>
+    						<th>Imagem</th>
+    						<th>Qnt.</th>
+    						<th>Preco</th>
+    						<th>Total</th>
+    					</tr>
+    					<tr th:each="car: ${carrinho}">
+    						<td th:text="${car.value.artigo_nome}"></td>
+    						<td > 
+    							<a th:href="@{'/img/fotos/'+ ${car.value.foto}}" id="fotoModal">
+    								<img th:src="@{'/img/fotos/'+ ${car.value.foto}}" height="80" alt="">
+    							</a> 						
+    						<td>
+    							<span th:text="${car.value.quantidade}" class="mr-1">Quantidade</span>
+    							<a th:href="@{'/carrinho/add/' + ${car.value.artigo_id}} + '?cartPage=true'" class="btn btn-success btn-sm">+</a>
+    							<a th:href="@{'/carrinho/subtract/' + ${car.value.artigo_id}}" class="btn btn-primary btn-sm">-</a>
+    							<a th:href="@{'/carrinho/remove/' + ${car.value.artigo_id}}" class="btn btn-info btn-sm">Remover</a>
+    						
+    						</td>
+    						<td th:text="${#numbers.formatDecimal(car.value.preco_unitario,0,'COMMA',2,'POINT')+ ' MZN'}"> Price</td>   
+    						<td th:with="formattedTotal=${car.value.preco_unitario} * ${car.value.quantidade}" th:text="${#numbers.formatDecimal(formattedTotal,0,'COMMA',2,'POINT')+ ' MZN'}"></td>   
+    					</tr>
+    					<tr>
+    						<td class="text-right font-weight-bold" colspan="4">Subtotal: </td>
+    						<td colspan="1"  th:text="${#numbers.formatDecimal(total,0,'COMMA',2,'POINT')+ ' MZN'}">000</td>
+    					</tr>
+    					<tr>
+    						<td>
+    							<a href="/carrinho/clear"  class="btn btn-danger btn-sm">Limpar carrinho</a>
+    						</td>
+    						<td colspan="4" class="text-right">
+    							<a href="#"  class="btn btn-success btn-sm">Pagamento</a>
+    						</td>    						
+    					</tr>
+    				
+    				</table>
+    				</div>
+    		</div>
+    	
+    	</div>
+    	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="/webjars/jquery/jquery.min.js"></script>
@@ -109,5 +155,7 @@ header{
 		   $('#photoModal').modal();		
 		});	
 	</script>
-</body>
+    
+    </body>
+  
 </html>

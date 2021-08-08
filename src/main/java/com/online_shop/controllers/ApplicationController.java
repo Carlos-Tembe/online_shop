@@ -15,7 +15,7 @@ import com.online_shop.services.ArtigoService;
 import com.online_shop.services.CategoriaService;
 
 @Controller
-@RequestMapping("onlineshop")
+@RequestMapping("/")
 public class ApplicationController {
 
 	@Autowired
@@ -23,23 +23,23 @@ public class ApplicationController {
 	@Autowired
 	private CategoriaService categoriaService;
 
-//	@GetMapping
-//	public String index(Model model) {
-//		List<Categoria> categorias = categoriaService.buscarTodos();
-//		model.addAttribute("artigos", service.buscarTodos());
-//		model.addAttribute("categorias", categorias);
-//		return "index";
-//	}
-
 	@GetMapping
 	public String index(Model model) {
 		List<Categoria> categorias = categoriaService.buscarTodos();
 		model.addAttribute("artigos", service.buscarTodos());
 		model.addAttribute("categorias", categorias);
-		return "menu";
+		return "redirect:/artigos/0";
 	}
 
-	@GetMapping("/admin")
+	@GetMapping("onlineshop")
+	public String menu(Model model) {
+		List<Categoria> categorias = categoriaService.buscarTodos();
+		model.addAttribute("artigos", service.buscarTodos());
+		model.addAttribute("categorias", categorias);
+		return "redirect:/artigos/0";
+	}
+
+	@GetMapping("onlineshop/admin")
 	public String goHome() {
 		return "admin/admin";
 	}

@@ -1,59 +1,140 @@
 <!DOCTYPE html>
-<html>
+<html lang="pt" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
 <head>
-<title>Lista</title>
-<meta charset="UTF-8" />
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	<meta charset="UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+	  <!--<link href="https://fonts.googleapis.com/css?family=Poppins:100,200,300,400,500,600,700,800,900&display=swap" rel="stylesheet">-->
+	<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.13/css/all.css" />
+	<link rel="stylesheet" th:href="@{/css/style.css}" />
+	<link rel="stylesheet" th:href="@{/css/styleCorpo.css}"/>
 
-<!-- Bootstrap core CSS -->
+ <!-- Additional CSS Files -->
+    <link rel="stylesheet" th:href="@{/css/fontawesome.css}" />
+    <link rel="stylesheet" th:href="@{/css/templatemo-sixteen.css}" />
+    <link rel="stylesheet" th:href="@{/css/owl.css}" />
 
-<link href="//cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css"	rel="stylesheet" />
-<link href="/webjars/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-<link href="/webjars/open-iconic/font/css/open-iconic-bootstrap.min.css" rel="stylesheet" />
+	  
 </head>
 <body>
-<header th:replace="/fragments/header" class=""></header>
+<style>
+header{
+	height: 80px;
+	margin-top: 0px;
+	padding-top: 0px;
+	position: fixed;
+	
+}
+.principal{
+ 	/*overflow: hidden;
+ 
+  position: fixed; /* Set the navbar to fixed position 
+ 
+  width: 100%;  Full width */
 
-<div class="container-fluid">
-	<div th:replace="/fragments/categories"></div>
+}
 
-</div>
+</style>
+  
+  	<div th:replace="/fragments/shopheader"></div>
+	<div class="latest-products" style="padding-top: 110px;">
+      <div class="container">
+        <div class="row  mb-4">     
+		    	<div th:replace="/fragments/categorias" ></div>		
+          <div class="col-md-12">
+            <div class="section-heading">
+              <h2 th:text="${nomeCategoria}?:'Todos Artigos'"></h2>
+            </div>
+          </div>
+          <div class="col-md-4"  th:each="artigo : ${artigos}">
+            <div class="product-item">
+              <a th:href="@{'/img/fotos/'+ ${artigo.artigo.foto}}" id="fotoModal"><img th:src="@{'/img/fotos/'+ ${artigo.artigo.foto}}" height="270" alt=""></a>
+              <div class="down-content">
+                <a href="#"><h4 th:text="${artigo.artigo.descricao}+' '+${artigo.cor}"></h4></a>
+                <h6 th:text="${#numbers.formatDecimal(artigo.preco_unitario,0,'COMMA',2,'POINT')}+ ' MZN'">$25.75</h6>
+                <p th:text="'Tamanho:'+${artigo.tamanho}"></p>
+                <ul class="stars">
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                  <li><i class="fa fa-star"></i></li>
+                </ul>
+                <div style="position: relative;" class="float-right">
+                	<p> 
+                		<span>
+	                	 	<a title="Adicionar ao carrinho" class="btn btn-sm pr-4 cart-btn addCarrinho bg-danger pl-4"
+	                	 	 style="color: #fff;" th:attr="data-id=${artigo.id}" th:href="@{'/carrinho/add/' + ${artigo.id}}">
+	                	 	 Adicionar&nbsp;&nbsp;<i class="fas fa-cart-plus fa-lg" style="color: #fff;"></i></a> 
+                		 </span>
+                		 <img class="ajaxLoader d-none" src="/img/sistema/ajax-loader.gif">
+                		 <div class="btn btn-success btn-sm artigoAdicionado" style="position: absolute;right:30px;top:-4px; display:none ">Adiconado!</div>
+                
+                	
+                </div>
+              </div>
+            </div>
+          </div>         
+        </div>
+     
+         <nav class="" th:if="${count > perPage}">
+			<ul class="pagination pagination-circle d-flex justify-content-center">
+				<li class="page-item" th:if="${page > 0}">
+					<a th:href="@{${#httpServletRequest.requestURI}} + '?page=__${page-1}__'" class="page-link">Anterior</a>
+				</li>
+				<li class="page-item" th:each="number : ${#numbers.sequence(0,pageCount-1)}" th:classappend="${page==number} ? 'active' : ''">
+					<a th:href="@{${#httpServletRequest.requestURI}} + '?page=__${number}__'" class="page-link" th:text="${number+1}"></a>
+				</li>
+				<li class="page-item" th:if="${page < pageCount-1}">
+					<a th:href="@{${#httpServletRequest.requestURI}} + '?page=__${page+1}__'" class="page-link">Proximo</a>
+				</li>
+			</ul>			
+		</nav>
+		<div th:replace="/fragments/carrinha_partial"></div>	
+		<div th:unless="${!artigos.empty}">
+			<h4 class="display-5 d-flex justify-content-center">Nenhum artigo foi encontrado</h4>
+		</div>	
+      </div>
+    </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<div th:replace="/fragments/photoModal"></div>	
+ <div th:replace="/fragments/footer"></div>
+ <div th:replace="/fragments/contactoModal"></div>	
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
 	<script src="/webjars/jquery/jquery.min.js"></script>
 	<script src="/webjars/jquery-mask-plugin/dist/jquery.mask.min.js"></script>
-	<script
-		src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
-	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>
-	<script src="//cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+	<script src="/webjars/bootstrap/js/bootstrap.min.js"></script>	
+	<script type="text/javascript">    
+    	$('a.addCarrinho').click(function(e){
+    		e.preventDefault();
+    		let $this =$(this);
+    		
+    		$this.next().removeClass('d-none');
+    		
+    		let id = $this.attr("data-id");
+    		let url ="/carrinho/add/"+id;
+    		
+    		$.get(url,{},function(data){
+    			$('div.cart').html(data);
+    		}).done(function(){
+    			location.reload();
+    			$this.parent.parent.find('.artigoAdicionado').fadeIn();
+    			$this.next().addClass('d-none');
+    			setTimeout(()=>{
+    				$this.parent.parent.find('div.artigoAdicionado').fadeOut();
+    			},1000);
+    		});
+    	});
+    	
+    </script>
+	
+	
 	<script type="text/javascript">
-		$('.table #photoButton').on('click',function(event) {
+		$('.product-item #fotoModal').on('click',function(event) {
 		   event.preventDefault();
 		   var href = $(this).attr('href');
 		   $('#photoModal #artigoPhoto').attr('src', href);

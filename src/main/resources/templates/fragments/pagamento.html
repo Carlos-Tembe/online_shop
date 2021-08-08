@@ -1,0 +1,43 @@
+<div class="modal fade" tabindex="-1" role="dialog" id="pagamentoModal" style="margin-top: 130px;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Pagamento</h5>
+					<button type="button" class="close" data-dismiss="modal"
+						aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<div class="modal-body">
+						<div class="text-left text-muted" style="font-size: 14px;">Confirme a sua encomenda antes de proceder!</div>
+						<div style="height: 100px; width: 100%;" class="bg-primary">
+							<div class="display-4 text-light text-bold text'center" th:text="${cTotal}"> Valor a pagar</div>
+						</div>
+					 <hr>
+					<form method="POST">         
+		                <div class="container">
+		                      <div class="row">
+		                        <div class="col-md-12">
+		                          <label><b>Forma de Pagamento</b><label style="color: red;font-size: 15px;">&nbsp;(*Taxas aplicaveis pelo provedor)</label>:</label>
+		                        </div>
+		                      </div>
+		
+	                      	<div class="row">                        
+		                       <div class="col-md-12">		                        	                        
+		                          <input type="radio"  id="mpesa" class="form-control-radio">
+		                          <img src="/img/sistema/mpesa.png" width="35px;">Mpesa &nbsp; &nbsp; &nbsp;
+		                          <input type="radio"  id="paypal" class="form-control-radio">
+		                          <img src="/img/sistema/paypal.png" width="35px;">Paypal			                       
+		                        </div>		                          
+	                        </div>
+	                       </div>
+		                </form>
+				</div>
+				<div class="modal-footer">
+				<a class="btn btn-success"	 th:href="@{/carrinho/clear}">Fazer pagamento</a>
+				
+				<button type="button" class="btn btn-secondary"	data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>

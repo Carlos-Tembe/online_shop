@@ -108,6 +108,7 @@ public class CarrinhoController {
 		}
 
 		String refererLink = httpServletRequest.getHeader("referer");
+
 		return "redirect:" + refererLink;
 
 	}

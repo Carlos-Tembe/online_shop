@@ -13,8 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -281,7 +279,7 @@ public class ArtigoController {
 			@RequestParam(value = "page", required = false) Integer p, HttpSession session) {
 		int perPage = 6;
 		int page = (p != null) ? p : 0;
-		Pageable pageable = PageRequest.of(page, perPage);
+		// Pageable pageable = PageRequest.of(page, perPage);
 		long count = 0;
 		if (id == 0) {
 			List<Artigo_detalhes> artigos = detalheService.buscarArtigosPorEstado(ACTIVO);
@@ -309,11 +307,11 @@ public class ArtigoController {
 			double total = 0;
 			for (Item_venda value : carrinho.values()) {
 				tamanho += value.getQuantidade();
-				total += value.getPreco_unitario();
+				total += value.getPreco_unitario() * value.getQuantidade();
 			}
 
-			model.addAttribute("cTamanho", tamanho);
-			model.addAttribute("cTotal", total);
+			model.addAttribute("tamanho", tamanho);
+			model.addAttribute("total", total);
 			carrinhaActive = true;
 		}
 		model.addAttribute("carrinhaActive", carrinhaActive);
@@ -323,7 +321,7 @@ public class ArtigoController {
 		model.addAttribute("perPage", perPage);
 		model.addAttribute("page", page);
 
-		return "products";
+		return "index";
 	}
 
 }

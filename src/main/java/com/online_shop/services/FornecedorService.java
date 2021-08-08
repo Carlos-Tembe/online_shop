@@ -5,7 +5,6 @@ import java.util.List;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 import com.online_shop.models.Fornecedor;
@@ -34,8 +33,8 @@ public class FornecedorService {
 	public List<Fornecedor> buscarTodos() {
 		return repository.findAll();
 	}
-	
-	public List<Fornecedor> buscarPor(String search){
+
+	public List<Fornecedor> buscarPor(String search) {
 		return repository.findBySearch(search);
 	}
 

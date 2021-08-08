@@ -1,5 +1,5 @@
-<p class="carrinha">Tem&nbsp; <span th:text="${cTamanho}"></span>&nbsp;&nbsp;items no seu carrinho</p>
-<p class="carrinha">Total&nbsp; <span th:text="${#numbers.formatDecimal(cTotal,0,'COMMA',2,'POINT')}"></span>&nbsp;&nbsp;items no seu carrinho</p>	
+<p class="carrinha">Tem&nbsp; <span th:text="${tamanho}"></span>&nbsp;&nbsp;items no seu carrinho</p>
+<p class="carrinha">Total&nbsp; <span th:text="${#numbers.formatDecimal(total,0,'COMMA',2,'POINT')}"></span>&nbsp;&nbsp;items no seu carrinho</p>	
 <p class="carrinha">
 	<a th:href="@{/carrinho/view}" class="btn btn-success"> Ver carrinho</a>
 	<a href="/carrinho/clear" class="btn btn-danger float-right"> Clear carrinho</a>

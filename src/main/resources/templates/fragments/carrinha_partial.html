@@ -23,8 +23,8 @@
 			<div class="modal-body bg-dark">
 				<div class=" mt-3"  th:fragment="carrinha_partial">
 					<div class="cart carrinhaActive" th:if="${carrinhaActive}">
-						<p class="carrinha msg">Tem <span th:text="${cTamanho}+'  '"></span>items no seu carrinho</p>
-						<p class="carrinha msg">Total <span th:text="${#numbers.formatDecimal(cTotal,0,'COMMA',2,'POINT')+' MT'}"></span></p>	
+						<p class="carrinha msg">Tem <span th:text="${tamanho}+'  '"></span>items no seu carrinho</p>
+						<p class="carrinha msg">Total <span th:text="${#numbers.formatDecimal(total,0,'COMMA',2,'POINT')+' MT'}"></span></p>	
 						<p class="carrinha">
 							<a href="/carrinho/view" class="btn btn-success btn-sm"> Ver carrinho</a>
 							<a href="/carrinho/clear" class="btn btn-danger float-right btn-sm"> Limpar carrinho</a>

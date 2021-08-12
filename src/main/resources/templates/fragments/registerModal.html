@@ -1,0 +1,51 @@
+<style>
+	.error{
+		color: red;
+		font-size: 12px;
+	}
+	
+</style>
+<div class="form-body" th:fragment="registerModal">
+	<div class="container col-md-4" id="user" >
+	<h3 class="form-title" style="padding-top: 130px;">Registar Utilizador</h3>
+	<hr>
+		<form th:action="@{/register}" method="post" th:object="${user}">
+			<div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
+				Ocorreu um erro
+			
+			</div>
+			<div class="form-group">
+				<label for="">Nome de Utilizador: </label> 
+				<input type="text"	class="form-control" placeholder="Utilizador" autofocus="autofocus" th:field="*{username}">
+				<span class="error" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+			</div>
+			<div class="form-group">
+				<label for="">Senha: </label> 
+				<input type="password"	class="form-control" th:field="*{password}"  autofocus="autofocus">
+				<span class="error" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
+			</div>
+			<div class="form-group">
+				<label for="">Confirmar senha: </label> 
+				<input type="password"	class="form-control" th:field="*{confirmPassword}"  autofocus="autofocus">
+				<span class="error" th:if="${passWrong}">As senhas nao combinam!</span>
+
+			</div>
+			<div class="form-group">
+				<label for="">E-mail: </label> 
+				<input type="text"	class="form-control" placeholder="E-mail" autofocus="autofocus" th:field="*{email}">
+				<span class="error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+			</div>
+			<div class="form-group">
+				<label for="">Telefone(+258): </label> 
+				<input type="text"	class="form-control" placeholder="Telefone" autofocus="autofocus" th:field="*{telefone}">
+				<span class="error" th:if="${#fields.hasErrors('telefone')}" th:errors="*{telefone}"></span>
+			</div>
+			
+			
+			<div class="float-right">
+				<button type="submit" class="btn btn-primary btn-sm">Cadastrar</button>
+			</div>
+										
+		</form>
+	</div>
+</div>

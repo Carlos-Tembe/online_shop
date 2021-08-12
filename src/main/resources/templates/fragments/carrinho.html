@@ -58,7 +58,7 @@ div.overlay > img{
     				<img src="/img/sistema/ajax-loader.gif">
     			
     			</div>
-    				<h2 class="display-6 d-flex justify-content-center" style="margin-top: 130px">Minhas compras <span class="ml-2"><i class="fas fa-shopping-bag"></i></span></h2>
+    				<h2 class="display-6 d-flex justify-content-center" style="margin-top: 130px">Minhas compras <span class="ml-2"><i  class="fas fa-shopping-bag fa-lg"></i></span></h2>
     				<table class="table mt-2">
     					<tr>
     						<th>Artigo</th>
@@ -68,7 +68,7 @@ div.overlay > img{
     						<th>Total</th>
     					</tr>
     					<tr th:each="car: ${carrinho}">
-    						<td th:text="${car.value.artigo_nome}"></td>
+    						<td th:text="${car.value.artigo_nome}+' '+${car.value.detalheArtigo.cor}+' '+${car.value.detalheArtigo.tamanho}"></td>
     						<td > 
     							<a th:href="@{'/img/fotos/'+ ${car.value.foto}}" id="fotoModal">
     								<img th:src="@{'/img/fotos/'+ ${car.value.foto}}" height="80" alt="">
@@ -102,6 +102,8 @@ div.overlay > img{
     	
     	</div>
     	<div th:replace="/fragments/pagamento"></div>
+    	<div th:replace="/fragments/contactoModal"></div>
+    	
     	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->

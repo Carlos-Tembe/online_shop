@@ -1,6 +1,8 @@
 package com.online_shop.models;
 
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -24,7 +26,11 @@ public class Item_venda extends AbstractEntity<Long> {
 
 	private double item_montante;
 	private String foto;
+	@OneToOne
 	private Artigo_detalhes detalheArtigo;
+
+	@ManyToOne
+	private Venda venda;
 
 	public Item_venda(long artigo_id, String artigo_nome, double preco_unitario, double quantidade, String foto,
 			double item_montante) {
@@ -38,7 +44,8 @@ public class Item_venda extends AbstractEntity<Long> {
 		this.foto = foto;
 	}
 
-	public Item_venda(long artigo_id, String artigo_nome, double preco_unitario, double quantidade, String foto) {
+	public Item_venda(long artigo_id, String artigo_nome, double preco_unitario, double quantidade, String foto,
+			Artigo_detalhes detalheArtigo) {
 
 		super();
 		this.artigo_id = artigo_id;
@@ -46,6 +53,7 @@ public class Item_venda extends AbstractEntity<Long> {
 		this.preco_unitario = preco_unitario;
 		this.quantidade = quantidade;
 		this.foto = foto;
+		this.detalheArtigo = detalheArtigo;
 	}
 
 	public Item_venda(Artigo_detalhes detalhes, double quantidade) {

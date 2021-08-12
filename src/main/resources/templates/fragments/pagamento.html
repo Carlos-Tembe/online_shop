@@ -8,20 +8,28 @@
 						<span aria-hidden="true">&times;</span>
 					</button>
 				</div>
-				<div class="modal-body">
-						<div class="text-left text-muted" style="font-size: 14px;">Confirme a sua encomenda antes de proceder!</div>
-						<div style="height: 100px; width: 100%;" class="bg-primary">
-							<div class="display-4 text-light text-bold text'center" th:text="${cTotal}"> Valor a pagar</div>
-						</div>
-					 <hr>
-					<form method="POST">         
-		                <div class="container">
-		                      <div class="row">
-		                        <div class="col-md-12">
-		                          <label><b>Forma de Pagamento</b><label style="color: red;font-size: 15px;">&nbsp;(*Taxas aplicaveis pelo provedor)</label>:</label>
-		                        </div>
-		                      </div>
-		
+				<div class="modal-body">					
+						<form th:action="@{/venda}" method="post" th:object="${venda}">         
+			                <div class="container-fluid">
+							<div  class="col-md-12">
+								<div class="form-group">
+				                	<label for="">Data Entrega</label>
+				                	<input type="date" class="form-control" th:field="*{data_entrega}">
+			                	</div>
+			                	<div class="form-group">
+			                		<label>Seleccione o local</label>
+				                	<select  autofocus="autofocus" class="form-control"  th:field="*{local_entrega}">
+				                		<option value="Matola">Matola</option>	
+				                		<option value="Maputo">Maputo</option>										
+									</select>
+			                	</div>
+			                      <div class="row">
+			                        <div class="col-md-12">
+			                          <label><b>Forma de Pagamento</b><label style="color: red;font-size: 15px;">&nbsp;(*Taxas aplicaveis pelo provedor)</label>:</label>
+			                        </div>
+			                      </div>
+							</div>
+							<hr>			
 	                      	<div class="row">                        
 		                       <div class="col-md-12">		                        	                        
 		                          <input type="radio"  id="mpesa" class="form-control-radio">
@@ -30,14 +38,11 @@
 		                          <img src="/img/sistema/paypal.png" width="35px;">Paypal			                       
 		                        </div>		                          
 	                        </div>
+	                        	<button type="submit" class="btn btn-primary btn-sm float-right">Comprar</button>
 	                       </div>
 		                </form>
 				</div>
-				<div class="modal-footer">
-				<a class="btn btn-success"	 th:href="@{/carrinho/clear}">Fazer pagamento</a>
-				
-				<button type="button" class="btn btn-secondary"	data-dismiss="modal">Close</button>
-				</div>
+			
 			</div>
 		</div>
 	</div>

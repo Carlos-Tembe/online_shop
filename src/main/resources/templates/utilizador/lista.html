@@ -20,33 +20,22 @@
 		</div>
 
 		<div class="container" id="listagem">
-			<a href="/utilizadores/cadastrar"
-				class="btn btn-success float-right mb-2 btn-sm">Adicionar</a>
 			<div class="table-responsive">
 				<table class="table table-striped table-hover table-sm">
 					<thead>
 						<tr>
 							<th>#</th>
 							<th>Nome</th>
-							<th>Apelido</th>
-							<th>Perfil</th>
-							<th>Nome Utilizador</th>
+						
 							<th>Ação</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="u : ${utilizadores}">
 							<td th:text="${uStat.index}+1">1</td>
-							<td th:text="${u.primeiro_nome}">Calcas</td>
-							<td th:text="${u.segundo_nome}">Todos artigos feitos em
-								jeans</td>
-							<td th:text="${u.nomeUtilizador}"></td>
-							<td th:text="ToDo"></td>
-							<td colspan="2"><a class="btn btn-info btn-sm" href=""
-								th:href="@{/utilizadores/editar/{id} (id=${u.id})}"
-								role="button"> <span class="oi oi-brush" title="Editar"
-									aria-hidden="true"></span>
-							</a> <a href="" th:href="@{/utilizadores/excluir/{id} (id=${u.id})}"
+							<td th:text="${u.username}">Calcas</td>							
+							<td colspan="2">
+							<a href="" th:href="@{/utilizadores/excluir/{id} (id=${u.id})}"
 								role="button" class="btn btn-danger btn-sm"> <span
 									class="oi oi-circle-x" title="Exclusão desabilitada"
 									aria-hidden="true"></span>

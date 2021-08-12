@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 </head>
 <body>
+
+<style>
+	header{position:fixed;
+		
+	}
+	
+</style>
 	<header th:fragment="cabecalho">
 		<nav
 			class="navbar navbar-inverse navbar navbar-dark bg-dark fixed-top">
@@ -13,7 +20,12 @@
 						<i class="oi oi-menu"></i>
 					</button>
 					<a class="navbar-brand " th:href="@{/onlineshop}">OnlineShop</a>
+					
 				</div>
+				<div class="navbar nav-item">
+				<a th:href="@{/login}" class="navbar nav-link float-right text-white">Login</a>
+				</div>
+				
 			</div>
 		</nav>
 	</header>

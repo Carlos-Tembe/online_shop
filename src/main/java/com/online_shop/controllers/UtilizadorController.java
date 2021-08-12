@@ -22,6 +22,7 @@ import com.online_shop.models.Artigo;
 import com.online_shop.models.ArtigoPDFExporter;
 import com.online_shop.models.Utilizador;
 import com.online_shop.services.ArtigoService;
+import com.online_shop.services.UserService;
 import com.online_shop.services.UtilizadorService;
 
 @Controller
@@ -30,15 +31,22 @@ public class UtilizadorController {
 
 	@Autowired
 	private UtilizadorService service;
+	@Autowired
+	private UserService userService;
 
 	@Autowired
 	private ArtigoService artigoService;
 
 	@GetMapping
 	public String listar(Model model) {
-		model.addAttribute("utilizadores", service.buscarTodos());
+		model.addAttribute("utilizadores", userService.buscarTodos());
 		return "/utilizador/lista";
 	}
+//	@GetMapping
+//	public String listar(Model model) {
+//		model.addAttribute("utilizadores", service.buscarTodos());
+//		return "/utilizador/lista";
+//	}
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Model model) {
@@ -73,7 +81,7 @@ public class UtilizadorController {
 	@GetMapping("/excluir/{id}")
 	public String excluir(@PathVariable("id") Long id, Model model) {
 //		if (!service.utilizadorTemArtigos(id)) {
-		service.excluir(id);
+		userService.excluir(id);
 //		}
 		return listar(model);
 	}

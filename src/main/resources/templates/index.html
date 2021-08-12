@@ -19,26 +19,7 @@
 	  
 </head>
 <body>
-<style>
-header{
-	height: 80px;
-	margin-top: 0px;
-	padding-top: 0px;
-	position: fixed;
-	
-}
-.principal{
- 	/*overflow: hidden;
- 
-  position: fixed; /* Set the navbar to fixed position 
- 
-  width: 100%;  Full width */
-
-}
-
-</style>
-  
-  	<div th:replace="/fragments/shopheader"></div>
+	<div th:replace="/fragments/shopheader"></div>
 	<div class="latest-products" style="padding-top: 110px;">
       <div class="container">
         <div class="row  mb-4">     
@@ -102,6 +83,7 @@ header{
 <div th:replace="/fragments/photoModal"></div>	
  <div th:replace="/fragments/footer"></div>
  <div th:replace="/fragments/contactoModal"></div>	
+
 	<!-- Bootstrap core JavaScript
     ================================================== -->
 	<!-- Placed at the end of the document so the pages load faster -->
@@ -122,7 +104,7 @@ header{
     			$('div.cart').html(data);
     		}).done(function(){
     			location.reload();
-    			$this.parent.parent.find('.artigoAdicionado').fadeIn();
+    			$this.parent.parent.find('div.artigoAdicionado').fadeIn();
     			$this.next().addClass('d-none');
     			setTimeout(()=>{
     				$this.parent.parent.find('div.artigoAdicionado').fadeOut();

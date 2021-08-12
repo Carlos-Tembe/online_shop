@@ -7,11 +7,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
 </head>
 <body>
+<style>
+header{
+	height: 80px;
+	margin-top: 0px;
+	padding-top: 0px;
+	position: fixed;
+	
+}
+</style>
  
   <header class="bg-dark" >
       <nav class="navbar navbar-expand-lg principal" >
         <div class="container text-dark">
-          <a class="navbar-brand" th:href="@{/onlineshop}"><h2>Online <em>Shop</em></h2></a>
+          <a class="navbar-brand mt-2" th:href="@{/onlineshop}"><h2>Online <em>Shop</em></h2></a>
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -21,23 +30,29 @@
                 <a class="nav-link"th:href="@{/onlineshop}">Início                  
                 </a>
               </li> 
-              <li class="nav-item active">
-                <a class="nav-link" href="#">Nossos produtos</a>
-                <span class="sr-only">(current)</span>
-              </li>              
+                         
               <li class="nav-item">
                 <a class="nav-link" href="#" data-toggle="modal" data-target="#contactoModal">Contacte-nos</a>
               </li>
               <li class="nav-item">
                 <a class="nav-link" th:href="@{/onlineshop/admin}"> <i class="fas fa-user"></i></a>
               </li>
+              <!--  
+              <li class="nav-item" th:if="${principal==null}">
+            		<a th:href="@{/register}" class="nav-link"> Registar</a>
+            	</li>
+            	<li class="nav-item" th:if="${principal==null}">
+            		<a th:href="@{/login}" class="nav-link">Login</a>
+            	</li>-->
               <li class="nav-item me-3 me-lg-0">
 		        <a class="nav-link" href="#" data-toggle="modal" data-target="#carrinhoModal">
 		          <span class="badge badge-pill bg-danger" th:text="${tamanho}">0</span>
 		          <span><i class="fas fa-shopping-cart"></i></span>
 		        </a>
-		      </li>
+		      </li>		      
             </ul>
+           
+            
           </div>
         </div>
       </nav>

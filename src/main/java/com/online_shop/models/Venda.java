@@ -1,6 +1,11 @@
 package com.online_shop.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import lombok.Getter;
@@ -31,9 +36,9 @@ public class Venda extends AbstractEntity<Long> {
 	private double total;
 
 	private String tipo;
-//
-//	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
-//	private List<Item_venda> items = new ArrayList<>();
+
+	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
+	private List<Item_venda> items = new ArrayList<>();
 //
 ////	@OneToMany(mappedBy = "venda", cascade = CascadeType.ALL)
 ////	private List<Pagamento> pagamento = new ArrayList<>();

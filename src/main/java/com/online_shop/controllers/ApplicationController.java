@@ -1,15 +1,13 @@
 package com.online_shop.controllers;
 
-import java.util.List;
+import java.security.Principal;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.online_shop.models.Categoria;
 import com.online_shop.models.Utilizador;
 import com.online_shop.services.ArtigoService;
 import com.online_shop.services.CategoriaService;
@@ -25,17 +23,14 @@ public class ApplicationController {
 
 	@GetMapping
 	public String index(Model model) {
-		List<Categoria> categorias = categoriaService.buscarTodos();
-		model.addAttribute("artigos", service.buscarTodos());
-		model.addAttribute("categorias", categorias);
 		return "redirect:/artigos/0";
 	}
 
 	@GetMapping("onlineshop")
-	public String menu(Model model) {
-		List<Categoria> categorias = categoriaService.buscarTodos();
-		model.addAttribute("artigos", service.buscarTodos());
-		model.addAttribute("categorias", categorias);
+	public String menu(Model model, Principal principal) {
+		if (principal != null) {
+			model.addAttribute("principal", principal.getName());
+		}
 		return "redirect:/artigos/0";
 	}
 
@@ -44,14 +39,8 @@ public class ApplicationController {
 		return "admin/admin";
 	}
 
-	@PostMapping
-	public String entrar() {
-		return "admin/admin";
-
-	}
-
 	@GetMapping("/login")
-	public String loginView() {
+	public String login() {
 		return "utilizador/login";
 	}
 

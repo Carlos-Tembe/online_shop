@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.online_shop.models.Artigo_detalhes;
 import com.online_shop.models.Item_venda;
+import com.online_shop.models.Venda;
 import com.online_shop.services.ArtigoDetalhesService;
 
 @Controller
@@ -33,17 +34,17 @@ public class CarrinhoController {
 
 			HashMap<Long, Item_venda> carrinho = new HashMap<>();
 			carrinho.put(id, new Item_venda(id, artigo.getArtigo().getDescricao(), artigo.getPreco_unitario(), 1,
-					artigo.getArtigo().getFoto()));
+					artigo.getArtigo().getFoto(), artigo));
 			session.setAttribute("carrinho", carrinho);
 		} else {
 			HashMap<Long, Item_venda> carrinho = (HashMap<Long, Item_venda>) session.getAttribute("carrinho");
 			if (carrinho.containsKey(id)) {
 				double qty = carrinho.get(id).getQuantidade();
 				carrinho.put(id, new Item_venda(id, artigo.getArtigo().getDescricao(), artigo.getPreco_unitario(),
-						++qty, artigo.getArtigo().getFoto()));
+						++qty, artigo.getArtigo().getFoto(), artigo));
 			} else {
 				carrinho.put(id, new Item_venda(id, artigo.getArtigo().getDescricao(), artigo.getPreco_unitario(), 1,
-						artigo.getArtigo().getFoto()));
+						artigo.getArtigo().getFoto(), artigo));
 				session.setAttribute("carrinho", carrinho);
 			}
 		}
@@ -81,7 +82,7 @@ public class CarrinhoController {
 		} else {
 
 			carrinho.put(id, new Item_venda(id, artigo.getArtigo().getDescricao(), artigo.getPreco_unitario(), --qty,
-					artigo.getArtigo().getFoto()));
+					artigo.getArtigo().getFoto(), artigo));
 		}
 
 		String refererLink = httpServletRequest.getHeader("referer");
@@ -129,6 +130,7 @@ public class CarrinhoController {
 		model.addAttribute("tamanho", tamanho);
 		model.addAttribute("total", total);
 		model.addAttribute("carrinho", carrinho);
+		model.addAttribute("venda", new Venda());
 
 		return "fragments/carrinho";
 	}
